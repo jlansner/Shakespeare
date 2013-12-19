@@ -1,0 +1,32 @@
+body {
+    font-family: arial, helvetica;
+    font-size: 12px;
+}
+
+table, th, td {
+    font-size: 10px;
+}
+
+table {
+    margin-bottom: 10px;
+}
+
+tbody th {
+    text-align: left;
+}
+
+td {
+    text-align: center;
+}
+
+td:nth-child(2) {
+    text-align: left;
+}
+    
+.green {
+    background-color: #0c0;
+}
+
+.ui-tabs .ui-tabs-panel {
+    overflow-x: auto;
+}

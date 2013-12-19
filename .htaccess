@@ -1,0 +1,14 @@
+# Use PHP 5.4
+#AddType application/x-httpd-php54 .php
+
+# Use PHP 5.3
+AddType application/x-httpd-php53 .php
+
+<IfModule mod_rewrite.c>
+DirectoryIndex index.php
+Options +FollowSymLinks
+Options +Indexes
+RewriteEngine On
+RewriteBase /
+
+RewriteRule ^(.*)/$ /index.php?play=$1 [L,NC]
