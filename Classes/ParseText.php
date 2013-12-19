@@ -87,7 +87,7 @@ class ParseText {
 	public function assign_roles($readers) {
 		$totalCharacters = count($this->characters);
 		$characterKeys = array_keys($this->characters);
-		$maxLines = $this->totalLines / ($readers - 1);
+		$maxLines = ($this->totalLines / $readers) * 1.1;
 		
 		// assign characters with most lines to separate readers
 		for ($i = 0; $i < $readers; $i++) {
