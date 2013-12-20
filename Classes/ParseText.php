@@ -3,7 +3,7 @@
 class ParseText {
 	
 	public function __construct($xml_file) {
-		$this->xml = simplexml_load_file($xml_file . '.xml');
+		$this->xml = simplexml_load_file('xml/' . $xml_file . '.xml');
     
 		$this->title = $this->xml->TITLE;
 		$this->characters = array();
