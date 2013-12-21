@@ -115,6 +115,7 @@ class ParseText {
 					if (!array_key_exists($speaker,$this->characters)) {
 						$this->characters[$speaker]['speeches'] = 0;
 						$this->characters[$speaker]['lines'] = 0;
+						$this->characters[$speaker]['interactions'] = 0;
 						$this->characters[$speaker]['PLAY']['ACT ' . $act_number]['SCENE ' . $scene_number] = 0;
 					}
 					
@@ -165,8 +166,16 @@ class ParseText {
 							$this->conLines[$previousSpeaker][$currentSpeaker] += $speech['Lines'];
 					} 
 					$previousSpeaker = $currentSpeaker;
-				}	
+				}
 			}
+		}
+		
+		foreach ($this->conversations as $speaker => $interactions) {
+			foreach ($interactions as $key => $value) {
+				if ($value > 0) {
+					$this->characters[$speaker]['interactions']++;
+				}
+			} 
 		}
 
 	}

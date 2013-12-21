@@ -55,6 +55,7 @@ $parsedText = new ParseText($_GET['play']);
 			<tr>
 				<th rowspan="2">#</th>
 				<th rowspan="2">Character</th>
+				<th rowspan="2">Interactions</th>
 				<th rowspan="2">Speeches</th>
 				<th rowspan="2">Lines</th>
 		<?php
@@ -81,6 +82,7 @@ $parsedText = new ParseText($_GET['play']);
 			echo '<tr>
 			<td>' . $i . '</td>
 				<td>' . $key . '</td>
+				<td>' . $value['interactions'] . '</td>
 				<td>' . $value['speeches'] . '</td>
 				<td>' . $value['lines'] . '</td>';
 		
