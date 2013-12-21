@@ -25,7 +25,7 @@ class ParseText {
 		$characterKeys = array_keys($this->characters);
 		$maxLines = ($this->totalLines / $readers) * 1.1;
 		
-		// assign characters with most lines to separate readers
+		// assign characters with most interactions to separate readers
 		for ($i = 0; $i < $readers; $i++) {
 			$roles[$i][0] = $characterKeys[$i];
 		}
@@ -133,7 +133,7 @@ class ParseText {
 			$act_number++;
 		}
 
-		$this->characters = $this->subval_sort($this->characters,'lines');
+		$this->characters = $this->subval_sort($this->characters,'interactions');
 
 	}
 
