@@ -33,7 +33,7 @@ $fileList = new FileList();
 		<ul>
 <?php $list = $fileList->getDirectoryList();
 foreach ($list as $key => $value) { ?>
-			<li><a href="<?php echo $key; ?>"><?php echo $value; ?></a></li>
+			<li><a href="play/<?php echo $key; ?>"><?php echo $value; ?></a></li>
 <?php } ?>
 			
 		</ul>

@@ -30,3 +30,37 @@ td:nth-child(2) {
 .ui-tabs .ui-tabs-panel {
     overflow-x: auto;
 }
+
+.sortWrapper {
+    overflow-x: auto;
+}
+
+.sortDiv {
+    float: left;
+    width: 150px;
+}
+
+.sortDiv h3 {
+    text-align: center;
+}
+
+.connectedSortable {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 0 2.5em;
+    float: left;
+    margin-right: 10px;
+}
+
+.connectedSortable li {
+    margin: 0 5px 5px 5px;
+    padding: 5px;
+    font-size: 1.2em;
+    width: 120px; 
+    text-align: center;
+}
+ 
+.conflict {
+    color: #c00;
+    font-weight: bold;
+}

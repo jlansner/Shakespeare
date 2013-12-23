@@ -9,7 +9,7 @@ $parsedText = new ParseText($_GET['play']);
 	<title><?php echo $parsedText->title;?></title>
 		
 	<link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-	<link rel="stylesheet" type="text/css" href="css/shakespeare.css" />
+	<link rel="stylesheet" type="text/css" href="/css/shakespeare.css" />
 
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
@@ -142,6 +142,7 @@ $parsedText = new ParseText($_GET['play']);
 
 		<div id="roles<?php echo $z; ?>">
 			<h2>Roles - <?php echo $z; ?> Readers</h2>
+			<p><a href="/<?php echo $_GET['play']; ?>/sort/<?php echo $z; ?>">Sort Readers</a></p>
 <?php
 		 $i = 1;
 		 foreach ($readers as $reader) { ?>

@@ -16,5 +16,8 @@ RewriteCond %{REQUEST_URI} !index.php
 RewriteCond %{REQUEST_URI} !php
 RewriteCond %{REQUEST_URI} !.js
 RewriteCond %{REQUEST_URI} !.css
+RewriteCond %{REQUEST_URI} !favicon
+RewriteCond %{REQUEST_URI} !(.*)/$
 
-RewriteRule ^(.+)$ play.php?play=$1 [L,NC]
+RewriteRule ^([^/]+)/sort/(\d+)$ sort.php?play=$1&readers=$2 [L,NC]
+RewriteRule ^play/(.+)$ play.php?play=$1 [L,NC]
