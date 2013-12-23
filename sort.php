@@ -19,10 +19,10 @@ $parsedText = new ParseText($_GET['play']);
 			$('.connectedSortable').sortable({
 				connectWith: ".connectedSortable",
 				start: function(event,ui) {
-					var char1 = $(ui.item).attr('id').replace('_',' ');
+					var char1 = $(ui.item).attr('id').replace(/_/g,' ');
 					$('.connectedSortable li').each(function() {
 						if ($(this).attr('id')) {
-							var char2 = $(this).attr('id').replace('_',' ');
+							var char2 = $(this).attr('id').replace(/_/g,' ');
 							if (conversations[char1][char2] > 0) {
 								$(this).addClass('conflict').children('span').html(conversations[char1][char2]);
 							}
@@ -41,6 +41,12 @@ $parsedText = new ParseText($_GET['play']);
 					});
 				}
 			}).disableSelection();
+			
+			$('.connectedSortable').each(function() {
+				if ($(this).children('li').length == 1) {
+					$(this).sortable( "option", "disabled", true);
+				}
+			});
 		});
 	</script>	
 	<script type="text/javascript">
