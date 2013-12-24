@@ -16,37 +16,28 @@ $parsedText = new ParseText($_GET['play']);
 	<script type="text/javascript">
 		$(document).ready(function() {
 			conversations = <?php echo json_encode($parsedText->conversations); ?>;
+
+			$('.connectedSortable li').click(function() {
+				$('.connectedSortable li').removeClass('conflict active').children('span').html('&nbsp;');
+
+				$(this).addClass('active');
+
+				var char1 = $(this).attr('id').replace(/_/g,' ');
+
+				$('.connectedSortable li').each(function() {
+					if ($(this).attr('id')) {
+						var char2 = $(this).attr('id').replace(/_/g,' ');
+						if (conversations[char1][char2] > 0) {
+							$(this).addClass('conflict').children('span').html(conversations[char1][char2]);
+						}
+					}
+				});
+			});
+
 			$('.connectedSortable').sortable({
-				connectWith: ".connectedSortable",
-				start: function(event,ui) {
-					var char1 = $(ui.item).attr('id').replace(/_/g,' ');
-					$('.connectedSortable li').each(function() {
-						if ($(this).attr('id')) {
-							var char2 = $(this).attr('id').replace(/_/g,' ');
-							if (conversations[char1][char2] > 0) {
-								$(this).addClass('conflict').children('span').html(conversations[char1][char2]);
-							}
-						}
-					});
-					$('.connectedSortable').sortable( "option", "disabled", false);
-				},
-				stop: function(event,ui) {
-					$('.connectedSortable li').removeClass('conflict').children('span').html('&nbsp;');
-				},
-				update: function(event,ui) {
-					$('.connectedSortable').each(function() {
-						if ($(this).children('li').length == 1) {
-							$(this).sortable( "option", "disabled", true);
-						}
-					});
-				}
+				connectWith: ".connectedSortable"
 			}).disableSelection();
 			
-			$('.connectedSortable').each(function() {
-				if ($(this).children('li').length == 1) {
-					$(this).sortable( "option", "disabled", true);
-				}
-			});
 		});
 	</script>	
 	<script type="text/javascript">
@@ -69,12 +60,12 @@ $parsedText = new ParseText($_GET['play']);
 	<p>Total Speeches - <?php echo $parsedText->totalSpeeches; ?><br />
 	Total Lines - <?php echo $parsedText->totalLines; ?><br />
 	Characters - <?php echo count($parsedText->characters); ?><br />
-	<a href="xml/<?php echo $_GET['play']; ?>.xml" target="_blank">Original Text</a>
+	<a href="/xml/<?php echo $_GET['play']; ?>.xml" target="_blank">Original Text</a>
 	</p>
 
 <?php $readers = $parsedText->assign_roles($_GET['readers']); ?>
 
-<h2>Roles - <?php echo $z; ?> Readers</h2>
+<h2>Roles - <?php echo $_GET['readers']; ?> Readers</h2>
 <div class="sortWrapper">
 <?php
 $i = 1;
@@ -82,9 +73,13 @@ $i = 1;
 foreach ($readers as $reader) { ?>
 
 	<div class="sortDiv">
-	<h3>Reader <?php echo $i; ?></h3>
-	<ul id=reader<?php echo $i; ?> class="connectedSortable">
-<?php 
+	<?php if ($i > $_GET['readers']) { ?>
+		<h3>Unassigned</h3>
+		<ul id=reader<?php echo $i; ?> class="connectedSortable">
+	<?php } else { ?>
+		<h3>Reader <?php echo $i; ?></h3>
+		<ul id=reader<?php echo $i; ?> class="connectedSortable reader">
+<?php }
 		foreach ($reader as $role) {
 			echo '<li id="' . str_replace(" ", "_", $role) . '" class="ui-state-default">' . $role . '<br />
 				<span class="conflicts">&nbsp;</span></li>';

@@ -47,13 +47,13 @@ td:nth-child(2) {
 .connectedSortable {
     list-style-type: none;
     margin: 0;
-    padding: 0 0 2.5em;
+    padding: 0;
     float: left;
-    margin-right: 10px;
+    margin: 0 5px;
 }
 
 .connectedSortable li {
-    margin: 0 5px 5px 5px;
+    margin: 5px;
     padding: 5px;
     font-size: 1.2em;
     width: 120px; 
@@ -62,5 +62,12 @@ td:nth-child(2) {
  
 .conflict {
     color: #c00;
+    border-color: #c00;
+    font-weight: bold;
+}
+
+.active {
+    color: #00c;
+    border-color: #00c;
     font-weight: bold;
 }

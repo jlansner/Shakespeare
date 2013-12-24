@@ -81,6 +81,9 @@ class ParseText {
 						}
 					}	
 				}
+				if ($notAssigned) {
+					$roles[$readers + 1][] = $characterKeys[$i];
+				}
 			}
 			
 			$lastReaderLines = 0;
@@ -133,8 +136,6 @@ class ParseText {
 			$act_number++;
 		}
 
-		$this->characters = $this->subval_sort($this->characters,'interactions');
-
 	}
 
 	private function createConversationArray() {
@@ -177,6 +178,9 @@ class ParseText {
 				}
 			} 
 		}
+		
+		$this->characters = $this->subval_sort($this->characters,'interactions');
+		
 
 	}
 

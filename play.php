@@ -38,7 +38,7 @@ $parsedText = new ParseText($_GET['play']);
 	<p>Total Speeches - <?php echo $parsedText->totalSpeeches; ?><br />
 	Total Lines - <?php echo $parsedText->totalLines; ?><br />
 	Characters - <?php echo count($parsedText->characters); ?><br />
-	<a href="xml/<?php echo $_GET['play']; ?>.xml" target="_blank">Original Text</a>
+	<a href="/xml/<?php echo $_GET['play']; ?>.xml" target="_blank">Original Text</a>
 	</p>
 
 <div id="tabs">
