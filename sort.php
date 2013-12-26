@@ -14,11 +14,23 @@ $parsedText = new ParseText($_GET['play']);
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 	<script type="text/javascript">
+		function showCharLines() {
+			$('.sortDiv').each(function() {
+				var charLines = 0;
+				
+				$(this).find('.lines').each(function() {
+					charLines += parseInt($(this).html());
+				});
+				
+				$(this).find('h4').html(charLines + ' Lines');
+			});
+		}
+
 		$(document).ready(function() {
 			conversations = <?php echo json_encode($parsedText->conversations); ?>;
-
+			
 			$('.connectedSortable li').click(function() {
-				$('.connectedSortable li').removeClass('conflict active').children('span').html('&nbsp;');
+				$('.connectedSortable li').removeClass('conflict active').children('.conflicts').html('&nbsp;');
 
 				$(this).addClass('active');
 
@@ -28,16 +40,20 @@ $parsedText = new ParseText($_GET['play']);
 					if ($(this).attr('id')) {
 						var char2 = $(this).attr('id').replace(/_/g,' ');
 						if (conversations[char1][char2] > 0) {
-							$(this).addClass('conflict').children('span').html(conversations[char1][char2]);
+							$(this).addClass('conflict').children('.conflicts').html(conversations[char1][char2]);
 						}
 					}
 				});
 			});
 
 			$('.connectedSortable').sortable({
-				connectWith: ".connectedSortable"
+				connectWith: ".connectedSortable",
+				update: function() {
+					showCharLines();
+				}
 			}).disableSelection();
 			
+			showCharLines();
 		});
 	</script>	
 	<script type="text/javascript">
@@ -75,13 +91,16 @@ foreach ($readers as $reader) { ?>
 	<div class="sortDiv">
 	<?php if ($i > $_GET['readers']) { ?>
 		<h3>Unassigned</h3>
+		<h4>Lines</h4>
 		<ul id=reader<?php echo $i; ?> class="connectedSortable">
 	<?php } else { ?>
 		<h3>Reader <?php echo $i; ?></h3>
+		<h4>Lines</h4>
 		<ul id=reader<?php echo $i; ?> class="connectedSortable reader">
 <?php }
 		foreach ($reader as $role) {
 			echo '<li id="' . str_replace(" ", "_", $role) . '" class="ui-state-default">' . $role . '<br />
+				<span class="lines">' . $parsedText->characters[$role]['lines'] . '</span> Lines<br />
 				<span class="conflicts">&nbsp;</span></li>';
 		}
 ?>		

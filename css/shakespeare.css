@@ -42,6 +42,14 @@ td:first-child, td:nth-child(2) {
 
 .sortDiv h3 {
     text-align: center;
+    margin: 0;
+}
+
+.sortDiv h4 {
+    text-align: center;
+    font-weight: normal;
+    font-style: italic;
+    margin: 0 0 5px 0;
 }
 
 .connectedSortable {
