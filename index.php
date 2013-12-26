@@ -37,5 +37,7 @@ foreach ($list as $key => $value) { ?>
 <?php } ?>
 			
 		</ul>
+		
+		<p><a href="info.php">Full Stats</a></p>
 </body>
 </html>

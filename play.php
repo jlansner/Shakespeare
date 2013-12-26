@@ -145,10 +145,13 @@ $parsedText = new ParseText($_GET['play']);
 			<p><a href="/<?php echo $_GET['play']; ?>/sort/<?php echo $z; ?>">Sort Readers</a></p>
 <?php
 		 $i = 1;
-		 foreach ($readers as $reader) { ?>
+		 foreach ($readers as $reader) { 
 		 	
-		 	<h3>Reader <?php echo $i; ?></h3>
-
+		 	if ($i > $z) { ?>
+		 		<h3>Unassigned</h3>
+		 	<?php } else { ?>
+		 		<h3>Reader <?php echo $i; ?></h3>
+			<?php } ?>
 		<table border="1">
 			<thead>
 			<tr>
