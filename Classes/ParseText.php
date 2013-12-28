@@ -2,9 +2,10 @@
 
 class ParseText {
 	
-	public function __construct($xml_file) {
+	public function __construct($xml_file, $sortField = 'interactions') {
 		$this->xml = simplexml_load_file('xml/' . $xml_file . '.xml');
     
+		$this->sortField = $sortField;
 		$this->title = $this->xml->TITLE;
 		$this->characters = array();
 		$this->lines = array();
@@ -179,7 +180,7 @@ class ParseText {
 			} 
 		}
 		
-		$this->characters = $this->subval_sort($this->characters,'interactions');
+		$this->characters = $this->subval_sort($this->characters,$this->sortField);
 		
 
 	}

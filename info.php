@@ -31,13 +31,27 @@ $list = $fileList->getDirectoryList();
 	</head>
 	<body>
 	<h1>All Plays</h1>
-<?php foreach ($list as $key => $value) { 
-	$play = new ParseText($key);	
+<?php foreach ($list as $key => $value) {
+	if ($_GET['sortField']) {
+		$play = new ParseText($key,$_GET['sortField']);
+	} else { 
+		$play = new ParseText($key);
+	}	
 ?>
 	<h2><a href="play/<?php echo $key; ?>"><?php echo $play->title; ?></a> &ndash; <?php echo $play->totalLines; ?> Lines</h2>
-<?php	
+	<table class="infoTable" border="1">
+		<thead>
+			<tr>
+			<?php	
+			for ($z = 4; $z < 9; $z++) { ?>
+				<th><?php echo $z ?> Readers</th>
+			<?php } ?>
+		</thead>
+		<tbody>
+			<tr>
+	<?php
 	for ($z = 4; $z < 9; $z++) { ?>
-		<h3><?php echo $z ?> Readers</h3>
+		<td>
 		<ul>
 			<?php
 		$readers = $play->assign_roles($z);
@@ -56,15 +70,19 @@ $list = $fileList->getDirectoryList();
 				$varianceText = '<span class="negative">' . $variance . '%</span>';				
 			}
 		 	if ($i > $z) { ?>
-		 		<li><strong>Unassigned &ndash; <?php echo $lines; ?> Lines | <?php echo $percent ?>% | <?php echo $varianceText; ?></strong></li> 
+		 		<li class="unassigned">Unassigned &ndash; <?php echo $lines; ?> Lines | <?php echo $percent ?>%</li> 
 		 	<?php } else { ?>
 		 		<li>Reader <?php echo $i; ?> &ndash; <?php echo $lines; ?> Lines | <?php echo $percent; ?>% | <?php echo $varianceText; ?></li>
 			<?php } 
 			$i++; ?>
 		<?php } ?>	
 		</ul>
+		</td>
 	<?php } ?>
-	
+	</tr>
+	</tbody>
+	</table>
+	<hr />
 <?php } ?>
 
 </body>

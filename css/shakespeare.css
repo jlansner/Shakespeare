@@ -87,3 +87,27 @@ td:first-child, td:nth-child(2) {
 .negative {
     color: #c00;
 }
+
+.unassigned {
+    font-weight: bold;
+    color: #c00;
+}
+
+table.infoTable {
+    font-size: 12px;
+}
+
+table.infoTable td, table.infoTable th {
+    vertical-align: top;
+    font-size: 12px;
+}
+
+table.infoTable td {
+    text-align: left;
+}
+
+.infoTable ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}

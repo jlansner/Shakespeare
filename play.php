@@ -1,7 +1,11 @@
 <?php
 
 include('Classes/ParseText.php');
-$parsedText = new ParseText($_GET['play']);
+if ($_GET['sortField']) {
+	$parsedText = new ParseText($_GET['play'],$_GET['sortField']);
+} else {
+	$parsedText = new ParseText($_GET['play']);
+}
 ?>
 
 <html>
