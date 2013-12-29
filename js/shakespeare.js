@@ -29,8 +29,10 @@ $(document).ready(function() {
 		$('.connectedSortable li').each(function() {
 			if ($(this).attr('id')) {
 				var char2 = $(this).attr('id').replace(/_/g,' ');
-				if (conversations[char1][char2] > 0) {
-					$(this).addClass('conflict').children('.conflicts').html(conversations[char1][char2]);
+				if (conversations[char1][char2] == 1) {
+					$(this).addClass('conflict').children('.conflicts').html(conversations[char1][char2] + ' conversation');
+				} else if (conversations[char1][char2] > 0) {
+					$(this).addClass('conflict').children('.conflicts').html(conversations[char1][char2] + ' conversations');
 				}
 			}
 		});

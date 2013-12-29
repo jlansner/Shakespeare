@@ -117,3 +117,7 @@ table.infoTable td {
     margin: 0;
     list-style-type: none;
 }
+
+.conflicts {
+    font-size: .75em;
+}
