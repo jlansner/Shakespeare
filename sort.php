@@ -14,48 +14,12 @@ $parsedText = new ParseText($_GET['play']);
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 	<script type="text/javascript">
-		function showCharLines() {
-			$('.sortDiv').each(function() {
-				var charLines = 0;
-				
-				$(this).find('.lines').each(function() {
-					charLines += parseInt($(this).html());
-				});
-				
-				$(this).find('h4').html(charLines + ' Lines');
-			});
-		}
+		conversations = <?php echo json_encode($parsedText->conversations); ?>;
+		totalLines =  <?php echo $parsedText->totalLines; ?>;
+		readers = <?php echo $_GET['readers']; ?>;
+	</script>
 
-		$(document).ready(function() {
-			conversations = <?php echo json_encode($parsedText->conversations); ?>;
-			
-			$('.connectedSortable li').click(function() {
-				$('.connectedSortable li').removeClass('conflict active').children('.conflicts').html('&nbsp;');
-
-				$(this).addClass('active');
-
-				var char1 = $(this).attr('id').replace(/_/g,' ');
-
-				$('.connectedSortable li').each(function() {
-					if ($(this).attr('id')) {
-						var char2 = $(this).attr('id').replace(/_/g,' ');
-						if (conversations[char1][char2] > 0) {
-							$(this).addClass('conflict').children('.conflicts').html(conversations[char1][char2]);
-						}
-					}
-				});
-			});
-
-			$('.connectedSortable').sortable({
-				connectWith: ".connectedSortable",
-				update: function() {
-					showCharLines();
-				}
-			}).disableSelection();
-			
-			showCharLines();
-		});
-	</script>	
+	<script type="text/javascript" src="/js/shakespeare.js"></script>
 	<script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -92,10 +56,12 @@ foreach ($readers as $reader) { ?>
 	<?php if ($i > $_GET['readers']) { ?>
 		<h3>Unassigned</h3>
 		<h4>Lines</h4>
+		<h5>Percent</h5>
 		<ul id=reader<?php echo $i; ?> class="connectedSortable">
 	<?php } else { ?>
 		<h3>Reader <?php echo $i; ?></h3>
 		<h4>Lines</h4>
+		<h5>Percent</h5>
 		<ul id=reader<?php echo $i; ?> class="connectedSortable reader">
 <?php }
 		foreach ($reader as $role) {
