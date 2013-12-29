@@ -74,7 +74,7 @@ $parsedText = new ParseText($_GET['play']);
 
 	<h1><?php echo $parsedText->title; ?></h1>
 	<p>Total Speeches - <?php echo $parsedText->totalSpeeches; ?><br />
-	Total Lines - <?php echo $parsedText->totalLines; ?><br />
+	Total Lines - <?php echo number_format($parsedText->totalLines); ?><br />
 	Characters - <?php echo count($parsedText->characters); ?><br />
 	<a href="/xml/<?php echo $_GET['play']; ?>.xml" target="_blank">Original Text</a>
 	</p>

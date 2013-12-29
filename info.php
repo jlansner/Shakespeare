@@ -38,13 +38,13 @@ $list = $fileList->getDirectoryList();
 		$play = new ParseText($key);
 	}	
 ?>
-	<h2><a href="play/<?php echo $key; ?>"><?php echo $play->title; ?></a> &ndash; <?php echo $play->totalLines; ?> Lines</h2>
+	<h2><a href="play/<?php echo $key; ?>"><?php echo $play->title; ?></a> &ndash; <?php echo number_format($play->totalLines); ?> Lines</h2>
 	<table class="infoTable" border="1">
 		<thead>
 			<tr>
 			<?php	
 			for ($z = 4; $z < 9; $z++) { ?>
-				<th><?php echo $z ?> Readers</th>
+				<th><a href="<?php echo $key; ?>/sort/<?php echo $z; ?>"><?php echo $z ?> Readers</a></th>
 			<?php } ?>
 		</thead>
 		<tbody>

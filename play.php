@@ -40,7 +40,7 @@ if ($_GET['sortField']) {
 
 <h1><?php echo $parsedText->title; ?></h1>
 	<p>Total Speeches - <?php echo $parsedText->totalSpeeches; ?><br />
-	Total Lines - <?php echo $parsedText->totalLines; ?><br />
+	Total Lines - <?php echo number_format($parsedText->totalLines); ?><br />
 	Characters - <?php echo count($parsedText->characters); ?><br />
 	<a href="/xml/<?php echo $_GET['play']; ?>.xml" target="_blank">Original Text</a>
 	</p>
@@ -49,10 +49,9 @@ if ($_GET['sortField']) {
 	<ul>
 		<li><a href="#characters">Characters</a></li>
 		<li><a href="#conversations">Conversations</a></li>
-		<?php for ($z = 4; $z < 9; $z++) { ?>
-
+	<?php for ($z = 4; $z < 9; $z++) { ?>
 		<li><a href="#roles<?php echo $z; ?>">Roles - <?php echo $z; ?> Readers</a></li>
-<?php } ?>
+	<?php } ?>
 	</ul>
 
 	<div id="characters">
