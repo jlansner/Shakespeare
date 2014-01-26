@@ -25,42 +25,51 @@ class ParseText {
 		$totalCharacters = count($this->characters);
 		$characterKeys = array_keys($this->characters);
 		$maxLines = ($this->totalLines / $readers) * 1.1;
-		
+		$readerLines = array();
 		// assign characters with most interactions to separate readers
 		for ($i = 0; $i < $readers; $i++) {
-			$roles[$i][0] = $characterKeys[$i];
+			$newRole = $characterKeys[$i];
+			$roles[$i][0] = $newRole;
+			$readerLines['reader' . $i] = $this->characters[$newRole]['lines']; 
 		}
 
 		// assign remaining characters
-		$lastReader = $readers - 1;
+		asort($readerLines);
+
+//		$lastReader = $readers - 1;
 		
 		for ($i = $readers; $i < $totalCharacters; $i++) {
 			$notAssigned = true;
+			$newRole = $characterKeys[$i];
 
 			// start with last reader, move up towards first one
-			for ($j = $lastReader; $j >= 0; $j--) {
+//			for ($j = $lastReader; $j >= 0; $j--) {
+		
+			// start with fewest lines, move up
+			foreach ($readerLines as $key => $value) {
+				$thisReader = substr($key,6);
 				if ($notAssigned) {
 					$noConflict = true;
 
 					// check other roles assigned to this reader
-					foreach ($roles[$j] as $role) {
-	
+					foreach ($roles[$thisReader] as $role) {
 						// if this reader has a conflict, move to next reader
-						if ($this->conversations[$characterKeys[$i]][$role]) {
+						if ($this->conversations[$newRole][$role]) {
 							$noConflict = false;
 							break;
 						}
 					}
 					
 					if ($noConflict) {
-						$roles[$j][] = $characterKeys[$i];
+						$roles[$thisReader][] = $newRole;
+						$readerLines[$key] += $this->characters[$newRole]['lines'];
 						$notAssigned = false;
 						break;
 					}
 				}
 			}
 			
-			if ($notAssigned) {
+/*			if ($notAssigned) {
 				for ($j = $readers - 1; $j >=0; $j--) {
 					if ($notAssigned) {
 						$noConflict = true;
@@ -69,34 +78,37 @@ class ParseText {
 						foreach ($roles[$j] as $role) {
 		
 							// if this reader has a conflict, move to next reader
-							if ($this->conversations[$characterKeys[$i]][$role]) {
+							if ($this->conversations[$newRole][$role]) {
 								$noConflict = false;
 								break;
 							}
 						}
 						
 						if ($noConflict) {
-							$roles[$j][] = $characterKeys[$i];
+							$roles[$j][] = $newRole;
 							$notAssigned = false;
 							break;
 						}
 					}	
-				}
+				} */
 				if ($notAssigned) {
-					$roles[$readers + 1][] = $characterKeys[$i];
+					$roles[$readers + 1][] = $newRole;
 				}
-			}
+/*			} */
 			
-			$lastReaderLines = 0;
+			asort($readerLines);
+/*			$lastReaderLines = 0;
 			foreach ($roles[$lastReader] as $role) {
 				$lastReaderLines += $this->characters[$role]['lines'];
 			}
 			
 			if ($lastReaderLines > $maxLines) {
 				$lastReader--;
-			}		
-		}
-		
+			}
+
+ */ 
+ 		}
+	
 		return $roles;
 	}
 
