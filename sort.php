@@ -6,6 +6,9 @@ if ($_GET['sortBy']) {
 } else {
 	$parsedText = new ParseText($_GET['play']);	
 }
+
+$readers = $parsedText->assign_roles($_GET['readers']);
+
 ?>
 
 <html>
@@ -19,6 +22,7 @@ if ($_GET['sortBy']) {
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 	<script type="text/javascript">
 		conversations = <?php echo json_encode($parsedText->conversations); ?>;
+		roles = <?php echo json_encode($readers); ?>;
 		totalLines =  <?php echo $parsedText->totalLines; ?>;
 		readers = <?php echo $_GET['readers']; ?>;
 	</script>
@@ -47,9 +51,9 @@ if ($_GET['sortBy']) {
 	<a href="/xml/<?php echo $_GET['play']; ?>.xml" target="_blank">Original Text</a>
 	</p>
 
-<?php $readers = $parsedText->assign_roles($_GET['readers']); ?>
 
 <h2>Roles - <?php echo $_GET['readers']; ?> Readers</h2>
+<h3 class="addReader">Add Reader</h3>
 <div class="sortWrapper">
 <?php
 $i = 1;

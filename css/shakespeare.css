@@ -61,9 +61,11 @@ td:first-child, td:nth-child(2) {
 .connectedSortable {
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 5px;
     float: left;
     margin: 0 5px;
+    width: 122px;
+    min-height: 60px;
 }
 
 .connectedSortable li {
@@ -84,6 +86,12 @@ td:first-child, td:nth-child(2) {
     color: #00c;
     border-color: #00c;
     font-weight: bold;
+}
+
+.roleConflict {
+    color: #fff;
+    font-weight: bold;
+    background: #c00;    
 }
 
 .positive {
@@ -120,4 +128,13 @@ table.infoTable td {
 
 .conflicts {
     font-size: .75em;
+}
+
+.ui-state-highlight {
+    height: 60px;
+}
+
+.addReader {
+    cursor: pointer;
+    color: #00c;
 }

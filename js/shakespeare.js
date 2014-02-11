@@ -17,33 +17,100 @@ function showCharLines() {
 	});
 }
 
+function updateRoles() {
+	roles = new Array();
+	var i = 0;
+	
+	$('.connectedSortable').each(function() {
+		var j = 0;
+		roles[i] = new Array();
+
+		$(this).find('li').each(function() {
+			roles[i][j] = $(this).attr('id').replace(/_/g,' ');
+			j++;			
+		});
+		
+		i++;
+	});
+}
+
+function checkConflicts() {
+	$('li').removeClass('roleConflict');
+	for (i = 0; i < roles.length; i++) {
+		for (j = 0; j < roles[i].length; j++ ) {
+			var char1 = roles[i][j];
+			for (k = 0; k < roles[i].length; k++) {
+				var char2 = roles[i][k];
+				if ((char1 != char2) && (conversations[char1][char2] > 0)) {
+					$('.connectedSortable').eq(i).children('li').eq(j).addClass('roleConflict');
+					$('.connectedSortable').eq(i).children('li').eq(k).addClass('roleConflict');
+				}
+			}
+		}
+	}
+}
+
 $(document).ready(function() {
 	
 	$('.connectedSortable li').click(function() {
-		$('.connectedSortable li').removeClass('conflict active').children('.conflicts').html('&nbsp;');
 
-		$(this).addClass('active');
+		if ($(this).hasClass('active')) {
+			$('.connectedSortable li').removeClass('conflict active').children('.conflicts').html('&nbsp;');
+		} else {
 
-		var char1 = $(this).attr('id').replace(/_/g,' ');
-
-		$('.connectedSortable li').each(function() {
-			if ($(this).attr('id')) {
-				var char2 = $(this).attr('id').replace(/_/g,' ');
-				if (conversations[char1][char2] == 1) {
-					$(this).addClass('conflict').children('.conflicts').html(conversations[char1][char2] + ' conversation');
-				} else if (conversations[char1][char2] > 0) {
-					$(this).addClass('conflict').children('.conflicts').html(conversations[char1][char2] + ' conversations');
+			$('.connectedSortable li').removeClass('conflict active').children('.conflicts').html('&nbsp;');
+	
+			$(this).addClass('active');
+	
+			var char1 = $(this).attr('id').replace(/_/g,' ');
+	
+			$('.connectedSortable li').each(function() {
+				if ($(this).attr('id')) {
+					var char2 = $(this).attr('id').replace(/_/g,' ');
+					if (char1 != char2) {
+						if (conversations[char1][char2] == 1) {
+							$(this).addClass('conflict').children('.conflicts').html(conversations[char1][char2] + ' conversation');
+						} else if (conversations[char1][char2] > 0) {
+							$(this).addClass('conflict').children('.conflicts').html(conversations[char1][char2] + ' conversations');
+						}
+					}
 				}
-			}
-		});
+			});
+		}
 	});
 
 	$('.connectedSortable').sortable({
 		connectWith: ".connectedSortable",
-		update: function() {
-			showCharLines();
-		}
+		deactivate: function() {
+			updateRoles();
+			checkConflicts();
+			showCharLines();			
+		},
+		placeholder: "ui-state-highlight"
 	}).disableSelection();
 	
 	showCharLines();
+	
+	$(document).on('click', '.addReader', function() {
+		readers++;
+		
+		if ($('.sortDiv').last().children('ul').hasClass('reader')) {
+			$('.sortWrapper').append('<div class="sortDiv"><h3>Reader ' + readers + '</h3><h4>0 lines</h4><h5>0%</h5><ul id="reader' + readers + '" class="connectedSortable reader"></ul></div>');
+					
+			$('.connectedSortable').sortable({
+				connectWith: ".connectedSortable",
+				deactivate: function() {
+					updateRoles();
+					checkConflicts();
+					showCharLines();			
+				},
+				placeholder: "ui-state-highlight"
+			}).disableSelection();
+		} else {
+			$('.sortDiv').last().find('h3').html('Reader ' + readers);
+			$('.sortDiv').last().children('ul').addClass('reader');
+		}
+		
+		showCharLines();
+	});
 });
