@@ -111,6 +111,8 @@ $(document).ready(function() {
 			$('.sortDiv').last().children('ul').addClass('reader');
 		}
 		
+		$('h2').html('Roles - ' + readers + ' Readers');
+		
 		showCharLines();
 	});
 });
