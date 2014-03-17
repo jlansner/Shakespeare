@@ -126,6 +126,10 @@ class ParseText {
 
 				foreach ($scene->SPEECH as $speech) {
 					$speaker = strtoupper($speech->SPEAKER);
+					
+					if ($speaker == "KING HENRY V") {
+						$speaker = "PRINCE HENRY";
+					}
 					$line_count = count($speech->LINE);
 
 					if (!array_key_exists($speaker,$this->characters)) {
@@ -172,6 +176,11 @@ class ParseText {
 					$this->totalLines += $speech['Lines'];
 		
 					$currentSpeaker = $speech['Speaker'];
+					
+					if ($currentSpeaker == "KING HENRY V") {
+						$currentSpeaker = "PRINCE HENRY";
+					}
+					
 					if ($previousSpeaker !== "") {
 							$this->conversations[$currentSpeaker][$previousSpeaker]++;
 							$this->conversations[$previousSpeaker][$currentSpeaker]++;
