@@ -2,11 +2,16 @@
 
 class ParseText {
 	
-	public function __construct($xml_file, $sortField = 'interactions') {
+	public function __construct($xml_file, $act = null, $readers = null) {
+    $this->xml_file = $xml_file;
 		$this->xml = simplexml_load_file('xml/' . $xml_file . '.xml');
     
-		$this->sortField = $sortField;
+		$this->sortField = 'interactions';
+    $this->actNumber = $act;
 		$this->title = $this->xml->TITLE;
+    if ($act) {
+      $this->title .= ' - Act ' . $act;
+    }
 		$this->characters = array();
 		$this->lines = array();
 		$this->conversations = array();
@@ -15,13 +20,16 @@ class ParseText {
 
 		$this->totalSpeeches = 0;
 		$this->totalLines = 0;
-		
+
+    $this->readers = $readers;
+    
 		$this->createCharacterArray();
 		$this->createConversationArray();
 
 	}
 
 	public function assign_roles($readers) {
+    $this->readers = $readers;
 		$totalCharacters = count($this->characters);
 		$characterKeys = array_keys($this->characters);
 		$maxLines = ($this->totalLines / $readers) * 1.1;
@@ -114,46 +122,70 @@ class ParseText {
 
 	private function createCharacterArray() {
 		
-		$act_number = 1;
+    if ($this->actNumber) {
+		  $this->play['ACT ' . $this->actNumber] = array();
+  	  $act_number = 1;
+      $scene_number = 1;
 
-		foreach ($this->xml->ACT as $act) {
-			$this->play['ACT ' . $act_number] = array();
-			$scene_number = 1;
+  	  foreach ($this->xml->ACT as $act) {
+        if ($act_number == $this->actNumber) {
+          foreach ($act->SCENE as $scene) {
+            $this->createSceneArray($scene,$this->actNumber,$scene_number);
+ 				    $scene_number++;
+			    }
+        }
+  		  $act_number++;
+      }
+    } else {
+		  $act_number = 1;
+
+		  foreach ($this->xml->ACT as $act) {
+			  $this->play['ACT ' . $act_number] = array();
+			  $scene_number = 1;
 			
-			foreach ($act->SCENE as $scene) {
-				$this->play['ACT ' . $act_number][] = 'SCENE ' . $scene_number;
-				$speech_number = 0;
+			  foreach ($act->SCENE as $scene) {
+          $this->createSceneArray($scene,$act_number,$scene_number);
+ 				  $scene_number++;
+			  }
 
-				foreach ($scene->SPEECH as $speech) {
-					$speaker = strtoupper($speech->SPEAKER);
-					
-					if ($speaker == "KING HENRY V") {
-						$speaker = "PRINCE HENRY";
-					}
-					$line_count = count($speech->LINE);
+			  $act_number++;
+		  }
+    }
+  }
+  
+  private function createSceneArray($scene,$act_number,$scene_number) {
+    $this->play['ACT ' . $act_number][] = 'SCENE ' . $scene_number;
+    $speech_number = 0;
 
-					if (!array_key_exists($speaker,$this->characters)) {
-						$this->characters[$speaker]['speeches'] = 0;
-						$this->characters[$speaker]['lines'] = 0;
-						$this->characters[$speaker]['interactions'] = 0;
-						$this->characters[$speaker]['PLAY']['ACT ' . $act_number]['SCENE ' . $scene_number] = 0;
-					}
+    foreach ($scene->SPEECH as $speech) {
+	    $speaker = strtoupper($speech->SPEAKER);
 					
-					$this->lines['ACT ' . $act_number]['SCENE ' . $scene_number][$speech_number]['Speaker'] = $speaker;
-					$this->lines['ACT ' . $act_number]['SCENE ' . $scene_number][$speech_number]['Lines'] = $line_count;
-					
-					$this->characters[$speaker]['speeches']++;
-					$this->characters[$speaker]['PLAY']['ACT ' . $act_number]['SCENE ' . $scene_number] += $line_count;
-					$this->characters[$speaker]['lines'] += $line_count;
+	    if ($speaker == "KING HENRY V") {
+		    $speaker = "PRINCE HENRY";
+	    } else if ($speaker == "MARCIUS") {
+	    	$speaker = "CORIOLANUS";
+	    }
 		
-					$speech_number++;
-				}
-				$scene_number++;
-			}
-			$act_number++;
-		}
+		
+	    $line_count = count($speech->LINE);
 
-	}
+	    if (!array_key_exists($speaker,$this->characters)) {
+		    $this->characters[$speaker]['speeches'] = 0;
+		    $this->characters[$speaker]['lines'] = 0;
+		    $this->characters[$speaker]['interactions'] = 0;
+		    $this->characters[$speaker]['PLAY']['ACT ' . $act_number]['SCENE ' . $scene_number] = 0;
+	    }
+					
+	    $this->lines['ACT ' . $act_number]['SCENE ' . $scene_number][$speech_number]['Speaker'] = $speaker;
+	    $this->lines['ACT ' . $act_number]['SCENE ' . $scene_number][$speech_number]['Lines'] = $line_count;
+					
+	    $this->characters[$speaker]['speeches']++;
+	    $this->characters[$speaker]['PLAY']['ACT ' . $act_number]['SCENE ' . $scene_number] += $line_count;
+	    $this->characters[$speaker]['lines'] += $line_count;
+		
+	    $speech_number++;
+    }
+  }
 
 	private function createConversationArray() {
 		foreach ($this->characters as $char1key => $char1value) {
@@ -164,34 +196,21 @@ class ParseText {
 			}
 		}
 
-		foreach ($this->lines as $act) {
-		
-			foreach ($act as $scene) {
-		
-				$this->totalSpeeches += count($scene);
-		
-				$currentSpeaker = "";
-				$previousSpeaker = "";
-				foreach ($scene as $speech) {
-					$this->totalLines += $speech['Lines'];
-		
-					$currentSpeaker = $speech['Speaker'];
-					
-					if ($currentSpeaker == "KING HENRY V") {
-						$currentSpeaker = "PRINCE HENRY";
-					}
-					
-					if ($previousSpeaker !== "") {
-							$this->conversations[$currentSpeaker][$previousSpeaker]++;
-							$this->conversations[$previousSpeaker][$currentSpeaker]++;
-		
-							$this->conLines[$currentSpeaker][$previousSpeaker] += $speech['Lines'];
-							$this->conLines[$previousSpeaker][$currentSpeaker] += $speech['Lines'];
-					} 
-					$previousSpeaker = $currentSpeaker;
-				}
-			}
-		}
+    if ($this->actNumber) {
+      if (is_array($this->lines['ACT ' . $this->actNumber])) {
+        foreach ($this->lines['ACT ' . $this->actNumber] as $scene) {
+	        $this->assignConversations($scene);
+         }
+      } else {
+        header( 'Location: /' .  $this->xml_file . '/sort/' . $this->readers) ;
+      }
+    } else {
+      foreach ($this->lines as $act) {
+        foreach ($act as $scene) {
+          $this->assignConversations($scene);
+        }
+      }
+    }
 		
 		foreach ($this->conversations as $speaker => $interactions) {
 			foreach ($interactions as $key => $value) {
@@ -202,9 +221,32 @@ class ParseText {
 		}
 		
 		$this->characters = $this->subval_sort($this->characters,$this->sortField);
-		
-
 	}
+  
+  private function assignConversations($scene) {
+      $this->totalSpeeches += count($scene);
+		
+      $currentSpeaker = "";
+      $previousSpeaker = "";
+      foreach ($scene as $speech) {
+	      $this->totalLines += $speech['Lines'];
+		
+	      $currentSpeaker = $speech['Speaker'];
+					
+	      if ($currentSpeaker == "KING HENRY V") {
+		      $currentSpeaker = "PRINCE HENRY";
+	      }
+					
+	      if ($previousSpeaker !== "") {
+			      $this->conversations[$currentSpeaker][$previousSpeaker]++;
+			      $this->conversations[$previousSpeaker][$currentSpeaker]++;
+		
+			      $this->conLines[$currentSpeaker][$previousSpeaker] += $speech['Lines'];
+			      $this->conLines[$previousSpeaker][$currentSpeaker] += $speech['Lines'];
+	      } 
+	      $previousSpeaker = $currentSpeaker;
+     }
+  }
 
 	private function subval_sort($a,$subkey) {
 		foreach($a as $k=>$v) {

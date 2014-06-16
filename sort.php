@@ -1,8 +1,8 @@
 <?php
 
 include('Classes/ParseText.php');
-if ($_GET['sortBy']) {
-	$parsedText = new ParseText($_GET['play'],$_GET['sortBy']);
+if ($_GET['act']) {
+	$parsedText = new ParseText($_GET['play'],$_GET['act'],$_GET['readers']);
 } else {
 	$parsedText = new ParseText($_GET['play']);	
 }
@@ -43,7 +43,6 @@ $readers = $parsedText->assign_roles($_GET['readers']);
 </script>
 	</head>
 	<body>
-
 	<h1><?php echo $parsedText->title; ?></h1>
 	<p>Total Speeches - <?php echo $parsedText->totalSpeeches; ?><br />
 	Total Lines - <?php echo number_format($parsedText->totalLines); ?><br />
