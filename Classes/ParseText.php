@@ -5,7 +5,9 @@ class ParseText {
 	public function __construct($xml_file, $act = null, $readers = null) {
     	$this->xml_file = $xml_file;
 		$this->xml = simplexml_load_file('xml/' . $xml_file . '.xml');
-    
+	    $this->xmlDoc = new DOMDocument();
+	    $this->xmlDoc->load('xml/' . $xml_file . '.xml');
+	
 		$this->sortField = 'interactions';
     	$this->actNumber = $act;
 		$this->title = $this->xml->TITLE;
