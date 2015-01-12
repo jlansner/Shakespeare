@@ -115,4 +115,35 @@ $(document).ready(function() {
 		
 		showCharLines();
 	});
+	
+	highlightColors = [
+		"#ffc",
+		"#ccf",
+		"#fcc",
+		"#cff",
+		"#fcf",
+		"#cfc" 
+	];
+
+	$(document).on('change', '.characters input', function() {
+		var i = 0;
+		$('.characters input').each(function() {
+			if ($(this).prop('checked')) {
+				console.log(i + "|" + $(this).val());
+				$('.' + $(this).val()).css({
+					'background-color': highlightColors[i % highlightColors.length]
+				});
+				i++;
+			}
+		});
+	});
+	
+	$(document).on('click', '.showHideCharacters', function() {
+		$('.charactersWrapper').toggleClass('showCharacters');
+	});
+
+	$(document).on('click', '.characters label', function() {
+		$(this).siblings('input').trigger('click');
+	});
+
 });

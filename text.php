@@ -14,11 +14,7 @@ $parsedText = new ParseText($_GET['play']);
 
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#tabs').tabs();
-		});
-	</script>	
+	<script type="text/javascript" src="/js/shakespeare.js"></script>
 	<script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -37,6 +33,20 @@ $parsedText = new ParseText($_GET['play']);
 
 <h1><?php echo $parsedText->title; ?></h1>
 
+<div class="charactersWrapper">
+	<div class="showHideCharacters">Show/Hide Character List</div>
+	<div class="characters">
+		<h2>Characters</h2>
+		<ul>
+		<?php 
+		$characters = $parsedText->characters;
+		ksort($characters);
+		foreach ($characters as $key => $value) { ?>
+			<li><input type="checkbox" name="characters" value="<?php echo $parsedText->canonical_name($key); ?>" /> <label for="<?php echo $parsedText->canonical_name($key); ?>"><?php echo $key . " (" . $value['lines'] .  " lines)"; ?></label></li>
+		<?php } ?>
+		</ul>
+	</div>
+</div>
 <?php
 $line = 0;
  foreach($parsedText->xml->ACT as $act) { ?>
@@ -49,8 +59,8 @@ $line = 0;
 			if ($child->getName() == "STAGEDIR") { ?>
 				<blockquote class="stage_direction"><?php echo $child; ?></blockquote>
 			<?php } elseif ($child->getName() == "SPEECH") { ?>
-				<h4 class="<?php echo strtolower($child->SPEAKER); ?>"><?php echo $child->SPEAKER; ?></h4>
-				<p class="<?php echo strtolower($child->SPEAKER); ?>">						
+				<h4 class="<?php echo $parsedText->canonical_name($child->SPEAKER); ?>"><?php echo $child->SPEAKER; ?></h4>
+				<p class="<?php echo $parsedText->canonical_name($child->SPEAKER); ?>">						
 					<?php foreach($child->children() as $speechChild) {
 						if ($speechChild->getName() == "LINE") { 
 							$line++;

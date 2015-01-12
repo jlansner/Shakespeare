@@ -138,3 +138,44 @@ table.infoTable td {
     cursor: pointer;
     color: #00c;
 }
+
+.charactersWrapper {
+	position: fixed;
+	top: 0;
+	right: 0;
+	border: 1px solid #ccc;
+	background-color: #eee;	
+}
+
+.showHideCharacters {
+	text-align: right;
+	display: block;
+	cursor: pointer;
+	padding: 5px;
+}
+.characters {
+	display: none;
+	padding: 1em;
+}
+
+.showCharacters .characters {
+	display: block;
+}
+
+.characters h2 {
+	margin-top: 0;
+}
+
+.characters ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.characters ul li {
+	display: inline-block;
+	width: 33%;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}

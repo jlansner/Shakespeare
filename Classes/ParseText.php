@@ -5,8 +5,6 @@ class ParseText {
 	public function __construct($xml_file, $act = null, $readers = null) {
     	$this->xml_file = $xml_file;
 		$this->xml = simplexml_load_file('xml/' . $xml_file . '.xml');
-	    $this->xmlDoc = new DOMDocument();
-	    $this->xmlDoc->load('xml/' . $xml_file . '.xml');
 	
 		$this->sortField = 'interactions';
     	$this->actNumber = $act;
@@ -162,14 +160,7 @@ class ParseText {
 		foreach ($scene->SPEECH as $speech) {
 			$speaker = strtoupper($speech->SPEAKER);
 					
-			if ($speaker == "KING HENRY V") {
-			    $speaker = "PRINCE HENRY";
-			} else if ($speaker == "MARCIUS") {
-				$speaker = "CORIOLANUS";
-			} else if (($speaker == "GLOUCESTER") && ($this->xml_file == "rich_iii")) {
-				$speaker = "KING RICHARD III";
-			}
-
+		  	$speaker = $this->combined_name($speaker);
 			$line_count = count($speech->LINE);
 
 		    if (!array_key_exists($speaker,$this->characters)) {
@@ -234,11 +225,8 @@ class ParseText {
       foreach ($scene as $speech) {
 	      $this->totalLines += $speech['Lines'];
 		
-	      $currentSpeaker = $speech['Speaker'];
-					
-	      if ($currentSpeaker == "KING HENRY V") {
-		      $currentSpeaker = "PRINCE HENRY";
-	      }
+	      $currentSpeaker = $speech['Speaker'];		  
+		  $currentSpeaker = $this->combined_name($currentSpeaker);
 					
 	      if ($previousSpeaker !== "") {
 			      $this->conversations[$currentSpeaker][$previousSpeaker]++;
@@ -262,6 +250,27 @@ class ParseText {
 		return $c;
 	}
 	
+	public function canonical_name($currentSpeaker) {
+		
+		$currentSpeaker = $this->combined_name($currentSpeaker);
+		$currentSpeaker = strtolower(str_replace(" ","_",$currentSpeaker));
+		
+		return $currentSpeaker;	
+	}
+
+	public function combined_name($currentSpeaker) {
+		if ($currentSpeaker == "KING HENRY V") {
+		    $currentSpeaker = "PRINCE HENRY";
+		} else if ($currentSpeaker == "LORD BARDOLPH") {
+			$currentSpeaker = "BARDOLPH";
+		} else if ($currentSpeaker == "MARCIUS") {
+			$currentSpeaker = "CORIOLANUS";
+		} else if (($currentSpeaker == "GLOUCESTER") && ($this->xml_file == "rich_iii")) {
+			$currentSpeaker = "KING RICHARD III";
+		}
+		
+		return $currentSpeaker;
+	}	
 };
 
 ?>

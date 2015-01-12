@@ -21,7 +21,9 @@ if ($_GET['sortField']) {
 		$(document).ready(function() {
 			$('#tabs').tabs();
 		});
-	</script>	
+	</script>
+
+	<script type="text/javascript" src="/js/shakespeare.js"></script>
 	<script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -39,10 +41,11 @@ if ($_GET['sortField']) {
 	<body>
 
 <h1><?php echo $parsedText->title; ?></h1>
-	<p>Total Speeches - <?php echo $parsedText->totalSpeeches; ?><br />
-	Total Lines - <?php echo number_format($parsedText->totalLines); ?><br />
-	Characters - <?php echo count($parsedText->characters); ?><br />
-	<a href="/xml/<?php echo $_GET['play']; ?>.xml" target="_blank">Original Text</a>
+	<p>
+		Total Speeches - <?php echo $parsedText->totalSpeeches; ?><br />
+		Total Lines - <?php echo number_format($parsedText->totalLines); ?><br />
+		Characters - <?php echo count($parsedText->characters); ?><br />
+		<a href="/text/<?php echo $_GET['play']; ?>" target="_blank">Original Text</a>
 	</p>
 
 <div id="tabs">
