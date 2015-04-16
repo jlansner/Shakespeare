@@ -47,7 +47,7 @@ $readers = $parsedText->assign_roles($_GET['readers']);
 	<p>Total Speeches - <?php echo $parsedText->totalSpeeches; ?><br />
 	Total Lines - <?php echo number_format($parsedText->totalLines); ?><br />
 	Characters - <?php echo count($parsedText->characters); ?><br />
-	<a href="/xml/<?php echo $_GET['play']; ?>.xml" target="_blank">Original Text</a>
+	<a href="/text/<?php echo $_GET['play']; ?>" target="_blank">Original Text</a>
 	</p>
 
 

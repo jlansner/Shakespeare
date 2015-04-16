@@ -22,9 +22,11 @@ class ParseText {
 		$this->totalLines = 0;
 
 		$this->readers = $readers;
+		$this->acts = count($this->xml->ACT);
     
 		$this->createCharacterArray();
 		$this->createConversationArray();
+		
 
 	}
 
@@ -158,8 +160,7 @@ class ParseText {
     	$speech_number = 0;
 
 		foreach ($scene->SPEECH as $speech) {
-			$speaker = strtoupper($speech->SPEAKER);
-					
+			$speaker = strtoupper($speech->SPEAKER);					
 		  	$speaker = $this->combined_name($speaker);
 			$line_count = count($speech->LINE);
 
@@ -227,7 +228,7 @@ class ParseText {
 		
 	      $currentSpeaker = $speech['Speaker'];		  
 		  $currentSpeaker = $this->combined_name($currentSpeaker);
-					
+
 	      if ($previousSpeaker !== "") {
 			      $this->conversations[$currentSpeaker][$previousSpeaker]++;
 			      $this->conversations[$previousSpeaker][$currentSpeaker]++;
@@ -253,23 +254,39 @@ class ParseText {
 	public function canonical_name($currentSpeaker) {
 		
 		$currentSpeaker = $this->combined_name($currentSpeaker);
-		$currentSpeaker = strtolower(str_replace(" ","_",$currentSpeaker));
+		$currentSpeaker = strtolower(preg_replace('/[\s\/]/',"_",$currentSpeaker));
 		
 		return $currentSpeaker;	
 	}
 
-	public function combined_name($currentSpeaker) {
-		if ($currentSpeaker == "KING HENRY V") {
-		    $currentSpeaker = "PRINCE HENRY";
-		} else if ($currentSpeaker == "LORD BARDOLPH") {
-			$currentSpeaker = "BARDOLPH";
-		} else if ($currentSpeaker == "MARCIUS") {
-			$currentSpeaker = "CORIOLANUS";
-		} else if (($currentSpeaker == "GLOUCESTER") && ($this->xml_file == "rich_iii")) {
-			$currentSpeaker = "KING RICHARD III";
+	public function combined_name($speaker) {
+		if ($this->xml_file == "coriolan") {
+			if (($speaker == "MARCIUS") || ($speaker == "CORIOLANUS")) {
+				$speaker = "MARCIUS/CORIOLANUS";
+			}
+		} else if ($this->xml_file == "hen_iv_2") {
+			if (($speaker == "PRINCE HENRY") || ($speaker == "KING HENRY V")) {
+				$speaker = "PRINCE HENRY/KING HENRY V";
+			} else if (($speaker == "BARDOLPH") || ($speaker == "LORD BARDOLPH")) {
+				$speaker = "BARDOLPH/LORD BARDOLPH";
+			}
+		} else if ($this->xml_file == "hen_vi_3") {
+			if (($speaker == "EDWARD") || ($speaker == "KING EDWARD IV")) {
+				$speaker = "EDWARD/KING EDWARD IV";
+			} else if (($speaker == "LADY GREY") || ($speaker == "QUEEN ELIZABETH")) {
+				$speaker = "LADY GREY/QUEEN ELIZABETH";
+			} else if (($speaker == "GEORGE") || ($speaker == "CLARENCE")) {
+				$speaker = "GEORGE/CLARENCE";
+			} else if (($speaker == "RICHARD") || ($speaker == "GLOUCESTER")) {
+				$speaker = "RICHARD/GLOUCESTER";
+			}
+		} else if ($this->xml_file == "rich_iii") {
+			if (($speaker == "GLOUCESTER") || ($speaker = "KING RICHARD III")) {
+				$speaker = "GLOUCESTER/KING RICHARD III";
+			}
 		}
 		
-		return $currentSpeaker;
+		return $speaker;
 	}	
 };
 

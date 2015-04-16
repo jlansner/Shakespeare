@@ -1281,60 +1281,102 @@ MOWBRAY, and BARDOLPH</STAGEDIR>
 
 <SCENE><TITLE>SCENE I.  London. A street.</TITLE>
 <STAGEDIR>Enter MISTRESS QUICKLY, FANG and his Boy with her,
-and SNARE following.
+and SNARE following.</STAGEDIR>
 
-MISTRESS QUICKLY Master Fang, have you entered the action?
+<SPEECH>
+<SPEAKER>MISTRESS QUICKLY</SPEAKER>
+<LINE>Master Fang, have you entered the action?</LINE>
+</SPEECH>
 
-FANG It is entered.
+<SPEECH>
+<SPEAKER>FANG</SPEAKER>
+<LINE>It is entered.</LINE>
+</SPEECH>
 
-MISTRESS QUICKLY Where's your yeoman? Is't a lusty yeoman? will a'
-stand to 't?
+<SPEECH>
+<SPEAKER>MISTRESS QUICKLY</SPEAKER>
+<LINE>Where's your yeoman? Is't a lusty yeoman? will a'</LINE>
+<LINE>stand to 't?</LINE>
+</SPEECH>
 
-FANG Sirrah, where's Snare?
+<SPEECH>
+<SPEAKER>FANG</SPEAKER>
+<LINE>Sirrah, where's Snare?</LINE>
+</SPEECH>
 
-MISTRESS QUICKLY O Lord, ay! good Master Snare.
+<SPEECH>
+<SPEAKER>MISTRESS QUICKLY</SPEAKER>
+<LINE>O Lord, ay! good Master Snare.</LINE>
+</SPEECH>
 
-SNARE Here, here.
+<SPEECH>
+<SPEAKER>SNARE</SPEAKER>
+<LINE>Here, here.</LINE>
+</SPEECH>
 
-FANG Snare, we must arrest Sir John Falstaff.
+<SPEECH>
+<SPEAKER>FANG</SPEAKER>
+<LINE>Snare, we must arrest Sir John Falstaff.</LINE>
+</SPEECH>
 
-MISTRESS QUICKLY Yea, good Master Snare; I have entered him and all.
+<SPEECH>
+<SPEAKER>MISTRESS QUICKLY</SPEAKER>
+<LINE>Yea, good Master Snare; I have entered him and all.</LINE>
+</SPEECH>
 
-SNARE It may chance cost some of us our lives, for he will stab.
+<SPEECH>
+<SPEAKER>SNARE</SPEAKER>
+<LINE>It may chance cost some of us our lives, for he will stab.</LINE>
+</SPEECH>
 
-MISTRESS QUICKLY Alas the day! take heed of him; he stabbed me in
-mine own house, and that most beastly: in good
-faith, he cares not what mischief he does. If his
-weapon be out: he will foin like any devil; he will
-spare neither man, woman, nor child.
+<SPEECH>
+<SPEAKER>MISTRESS QUICKLY</SPEAKER>
+<LINE>Alas the day! take heed of him; he stabbed me in</LINE>
+<LINE>mine own house, and that most beastly: in good</LINE>
+<LINE>faith, he cares not what mischief he does. If his</LINE>
+<LINE>weapon be out: he will foin like any devil; he will</LINE>
+<LINE>spare neither man, woman, nor child.</LINE>
+</SPEECH>
 
-FANG If I can close with him, I care not for his thrust.
+<SPEECH>
+<SPEAKER>FANG</SPEAKER>
+<LINE>If I can close with him, I care not for his thrust.</LINE>
+</SPEECH>
 
-MISTRESS QUICKLY No, nor I neither: I'll be at your elbow.
+<SPEECH>
+<SPEAKER>MISTRESS QUICKLY</SPEAKER>
+<LINE>No, nor I neither: I'll be at your elbow.</LINE>
+</SPEECH>
 
-FANG An I but fist him once; an a' come but within my vice,--
+<SPEECH>
+<SPEAKER>FANG</SPEAKER>
+<LINE>An I but fist him once; an a' come but within my vice,--</LINE>
+</SPEECH>
 
-MISTRESS QUICKLY I am undone by his going; I warrant you, he's an
-infinitive thing upon my score. Good Master Fang,
-hold him sure: good Master Snare, let him not
-'scape. A' comes continuantly to Pie-corner--saving
-your manhoods--to buy a saddle; and he is indited to
-dinner to the Lubber's-head in Lumbert street, to
-Master Smooth's the silkman: I pray ye, since my
-exion is entered and my case so openly known to the
-world, let him be brought in to his answer. A
-hundred mark is a long one for a poor lone woman to
-bear: and I have borne, and borne, and borne, and
-have been fubbed off, and fubbed off, and fubbed
-off, from this day to that day, that it is a shame
-to be thought on. There is no honesty in such
-dealing; unless a woman should be made an ass and a
-beast, to bear every knave's wrong. Yonder he
-comes; and that errant malmsey-nose knave, Bardolph,
-with him. Do your offices, do your offices: Master
-Fang and Master Snare, do me, do me, do me your offices.
+<SPEECH>
+<SPEAKER>MISTRESS QUICKLY</SPEAKER>
+<LINE>I am undone by his going; I warrant you, he's an</LINE>
+<LINE>infinitive thing upon my score. Good Master Fang,</LINE>
+<LINE>hold him sure: good Master Snare, let him not</LINE>
+<LINE>'scape. A' comes continuantly to Pie-corner--saving</LINE>
+<LINE>your manhoods--to buy a saddle; and he is indited to</LINE>
+<LINE>dinner to the Lubber's-head in Lumbert street, to</LINE>
+<LINE>Master Smooth's the silkman: I pray ye, since my</LINE>
+<LINE>exion is entered and my case so openly known to the</LINE>
+<LINE>world, let him be brought in to his answer. A</LINE>
+<LINE>hundred mark is a long one for a poor lone woman to</LINE>
+<LINE>bear: and I have borne, and borne, and borne, and</LINE>
+<LINE>have been fubbed off, and fubbed off, and fubbed</LINE>
+<LINE>off, from this day to that day, that it is a shame</LINE>
+<LINE>to be thought on. There is no honesty in such</LINE>
+<LINE>dealing; unless a woman should be made an ass and a</LINE>
+<LINE>beast, to bear every knave's wrong. Yonder he</LINE>
+<LINE>comes; and that errant malmsey-nose knave, Bardolph,</LINE>
+<LINE>with him. Do your offices, do your offices: Master</LINE>
+<LINE>Fang and Master Snare, do me, do me, do me your offices.</LINE>
+</SPEECH>
 
-[Enter FALSTAFF, Page, and BARDOLPH</STAGEDIR>
+<STAGEDIR>[Enter FALSTAFF, Page, and BARDOLPH</STAGEDIR>
 
 <SPEECH>
 <SPEAKER>FALSTAFF</SPEAKER>

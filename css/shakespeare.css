@@ -179,3 +179,20 @@ table.infoTable td {
 	padding: 0;
 	box-sizing: border-box;
 }
+
+
+.acts {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.acts li {
+    display: inline-block;
+    padding: 0 10px;
+    border-left: 1px solid #ccc;
+}
+
+.acts li:first-child {
+    border-left: 0;
+}

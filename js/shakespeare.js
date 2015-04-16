@@ -128,8 +128,9 @@ $(document).ready(function() {
 	$(document).on('change', '.characters input', function() {
 		var i = 0;
 		$('.characters input').each(function() {
+			$('.' + $(this).val()).removeAttr('style');
+
 			if ($(this).prop('checked')) {
-				console.log(i + "|" + $(this).val());
 				$('.' + $(this).val()).css({
 					'background-color': highlightColors[i % highlightColors.length]
 				});
