@@ -281,7 +281,7 @@ class ParseText {
 				$speaker = "RICHARD/GLOUCESTER";
 			}
 		} else if ($this->xml_file == "rich_iii") {
-			if (($speaker == "GLOUCESTER") || ($speaker = "KING RICHARD III")) {
+			if (($speaker == "GLOUCESTER") || ($speaker == "KING RICHARD III")) {
 				$speaker = "GLOUCESTER/KING RICHARD III";
 			}
 		}
