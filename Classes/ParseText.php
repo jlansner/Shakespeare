@@ -7,10 +7,15 @@ class ParseText {
 		$this->xml = simplexml_load_file('xml/' . $xml_file . '.xml');
 	
 		$this->sortField = 'interactions';
-    	$this->actNumber = $act;
+    	$this->actNumber = null;
 		$this->title = $this->xml->TITLE;
 		if ($act) {
-			$this->title .= ' - Act ' . $act;
+			$this->actNumber = str_split($act);
+			if (count($this->actNumber) == 1) {
+				$this->title .= ' - Act ' . $this->actNumber[0];
+			} else {
+				$this->title .= ' - Acts ' . implode(", ",$this->actNumber);
+			}
 		}
 		$this->characters = array();
 		$this->lines = array();
@@ -78,45 +83,12 @@ class ParseText {
 					}
 				}
 			}
-			
-/*			if ($notAssigned) {
-				for ($j = $readers - 1; $j >=0; $j--) {
-					if ($notAssigned) {
-						$noConflict = true;
-	
-						// check other roles assigned to this reader
-						foreach ($roles[$j] as $role) {
 		
-							// if this reader has a conflict, move to next reader
-							if ($this->conversations[$newRole][$role]) {
-								$noConflict = false;
-								break;
-							}
-						}
-						
-						if ($noConflict) {
-							$roles[$j][] = $newRole;
-							$notAssigned = false;
-							break;
-						}
-					}	
-				} */
-				if ($notAssigned) {
-					$roles[$readers + 1][] = $newRole;
-				}
-/*			} */
+			if ($notAssigned) {
+				$roles[$readers + 1][] = $newRole;
+			}
 			
 			asort($readerLines);
-/*			$lastReaderLines = 0;
-			foreach ($roles[$lastReader] as $role) {
-				$lastReaderLines += $this->characters[$role]['lines'];
-			}
-			
-			if ($lastReaderLines > $maxLines) {
-				$lastReader--;
-			}
-
- */ 
  		}
 	
 		return $roles;
@@ -130,7 +102,7 @@ class ParseText {
 			$scene_number = 1;
 	
 			foreach ($this->xml->ACT as $act) {
-				if ($act_number == $this->actNumber) {
+				if (in_array($act_number,$this->actNumber)) {
 					foreach ($act->SCENE as $scene) {
 						$this->createSceneArray($scene,$this->actNumber,$scene_number);
 						$scene_number++;
