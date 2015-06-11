@@ -16,8 +16,14 @@
 <PERSONAE>
 <TITLE>Dramatis Personae</TITLE>
 
-<PERSONA>KING JOHN</PERSONA>
-<PERSONA>PRINCE HENRY, son to the king.</PERSONA>
+<PERSONA>
+	<name>KING JOHN</name>
+	<canonical_name>king_john</canonical_name>
+</PERSONA>
+<PERSONA>
+	<name>PRINCE HENRY, son to the king.</name>
+	<canonical_name>prince_henry</canonical_name>
+	</PERSONA>
 <PERSONA>ARTHUR, Duke of Bretagne, nephew to the king.</PERSONA>
 <PERSONA>The Earl of PEMBROKE</PERSONA>
 <PERSONA>The Earl of ESSEX</PERSONA>

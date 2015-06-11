@@ -64,15 +64,18 @@ foreach ($readers as $reader) { ?>
 		<h3>Unassigned</h3>
 		<h4>Lines</h4>
 		<h5>Percent</h5>
-		<ul id=reader<?php echo $i; ?> class="connectedSortable">
+		<ul id="reader<?php echo $i; ?>" class="connectedSortable">
 	<?php } else { ?>
+		<span>
 		<h3>Reader <?php echo $i; ?></h3>
+		<input name="reader" type="text" class="renameReader" value="Reader <?php echo $i; ?>" />
+		</span>
 		<h4>Lines</h4>
 		<h5>Percent</h5>
-		<ul id=reader<?php echo $i; ?> class="connectedSortable reader">
+		<ul id="reader<?php echo $i; ?>" class="connectedSortable reader">
 <?php }
 		foreach ($reader as $role) {
-			echo '<li id="' . str_replace(" ", "_", $role) . '" class="ui-state-default">' . $role . '<br />
+			echo '<li id="' . $role . '" class="ui-state-default">' . $parsedText->characters[$role]['display_name'] . '<br />
 				<span class="lines">' . $parsedText->characters[$role]['lines'] . '</span> Lines<br />
 				<span class="conflicts">&nbsp;</span></li>';
 		}
@@ -81,6 +84,38 @@ foreach ($readers as $reader) { ?>
 	</div>
 <?php
 	$i++;
+}
+?>
+</div>
+<div class="play">
+<?php
+$line = 0;
+ foreach($parsedText->xml->ACT as $act) { ?>
+	<h2><?php echo $act->TITLE; ?></h2>
+	
+	<?php foreach($act->SCENE as $scene) { ?>
+		<h3><?php echo $scene->TITLE; ?></h3>
+		
+		<?php foreach($scene->children() as $child) { 
+			if ($child->getName() == "STAGEDIR") { ?>
+				<blockquote class="stage_direction"><?php echo $child; ?></blockquote>
+			<?php } elseif ($child->getName() == "SPEECH") { ?>
+				<h4 class="<?php echo $parsedText->canonical_name($child->SPEAKER); ?>"><?php echo $child->SPEAKER; ?> <span class="reader"></span></h4>
+				<p class="<?php echo $parsedText->canonical_name($child->SPEAKER); ?>">						
+					<?php foreach($child->children() as $speechChild) {
+						if ($speechChild->getName() == "LINE") { 
+							$line++;
+							echo $speechChild . "<br />";
+						} else if ($speechChild->getName() == "STAGEDIR") { ?>
+						</p>
+							<blockquote><?php echo $speechChild; ?></blockquote>
+							<p class="<?php echo strtolower($child->SPEAKER); ?>">
+					<?php }
+				} ?>
+			</p>
+			<?php }
+		}
+	}
 }
 ?>
 </div>

@@ -26,7 +26,7 @@ function updateRoles() {
 		roles[i] = new Array();
 
 		$(this).find('li').each(function() {
-			roles[i][j] = $(this).attr('id').replace(/_/g,' ');
+			roles[i][j] = $(this).attr('id');
 			j++;			
 		});
 		
@@ -48,6 +48,14 @@ function checkConflicts() {
 			}
 		}
 	}
+}
+
+function updateReaderNames() {
+	$('.sortDiv li').each(function() {
+		var reader = $(this).parent().parent().find('input').val();
+		$('h4.' + $(this).attr('id')).find('.reader').html('(' + reader + ')');
+	});
+
 }
 
 $(document).ready(function() {
@@ -84,7 +92,8 @@ $(document).ready(function() {
 		deactivate: function() {
 			updateRoles();
 			checkConflicts();
-			showCharLines();			
+			showCharLines();
+			updateReaderNames();		
 		},
 		placeholder: "ui-state-highlight"
 	}).disableSelection();
@@ -146,5 +155,20 @@ $(document).ready(function() {
 	$(document).on('click', '.characters label', function() {
 		$(this).siblings('input').trigger('click');
 	});
+	
+	$('.sortDiv').on('click', 'span h3', function() {
+		$(this).hide();
+		$(this).siblings('input').show().focus().select();
+	});
+	
+	$('.sortDiv').on('focusout', 'input', function() {
+		$('.sortDiv span h3').each(function() {
+			$(this).html($(this).siblings('input').val());
+		});
+		$('.sortDiv input').hide();
+		$('.sortDiv h3').show();
+		updateReaderNames();
+	});
 
+	updateReaderNames();
 });

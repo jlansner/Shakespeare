@@ -43,23 +43,18 @@ class ParseText {
 		$readerLines = array();
 		// assign characters with most interactions to separate readers
 		for ($i = 0; $i < $readers; $i++) {
-			$newRole = $characterKeys[$i];
+			$newRole = $this->canonical_name($characterKeys[$i]);
 			$roles[$i][0] = $newRole;
 			$readerLines['reader' . $i] = $this->characters[$newRole]['lines']; 
 		}
 
 		// assign remaining characters
 		asort($readerLines);
-
-//		$lastReader = $readers - 1;
 		
 		for ($i = $readers; $i < $totalCharacters; $i++) {
 			$notAssigned = true;
-			$newRole = $characterKeys[$i];
+			$newRole = $this->canonical_name($characterKeys[$i]);
 
-			// start with last reader, move up towards first one
-//			for ($j = $lastReader; $j >= 0; $j--) {
-		
 			// start with fewest lines, move up
 			foreach ($readerLines as $key => $value) {
 				$thisReader = substr($key,6);
@@ -132,11 +127,11 @@ class ParseText {
     	$speech_number = 0;
 
 		foreach ($scene->SPEECH as $speech) {
-			$speaker = strtoupper($speech->SPEAKER);					
-		  	$speaker = $this->combined_name($speaker);
+			$speaker = $this->canonical_name($speech->SPEAKER);					
 			$line_count = count($speech->LINE);
 
 		    if (!array_key_exists($speaker,$this->characters)) {
+		    	$this->characters[$speaker]['display_name'] = $this->combined_name($speech->SPEAKER);
 			    $this->characters[$speaker]['speeches'] = 0;
 			    $this->characters[$speaker]['lines'] = 0;
 			    $this->characters[$speaker]['interactions'] = 0;
