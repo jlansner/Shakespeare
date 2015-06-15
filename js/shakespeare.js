@@ -93,7 +93,6 @@ $(document).ready(function() {
 			updateRoles();
 			checkConflicts();
 			showCharLines();
-			updateReaderNames();		
 		},
 		placeholder: "ui-state-highlight"
 	}).disableSelection();
@@ -104,7 +103,7 @@ $(document).ready(function() {
 		readers++;
 		
 		if ($('.sortDiv').last().children('ul').hasClass('reader')) {
-			$('.sortWrapper').append('<div class="sortDiv"><h3>Reader ' + readers + '</h3><h4>0 lines</h4><h5>0%</h5><ul id="reader' + readers + '" class="connectedSortable reader"></ul></div>');
+			$('.sortWrapper').append('<div class="sortDiv"><span><h3>Reader ' + readers + '</h3><input name="reader" type="text" class="renameReader" value="Reader ' + readers + '"></span><h4>0 lines</h4><h5>0%</h5><ul id="reader' + readers + '" class="connectedSortable reader"></ul></div>');
 					
 			$('.connectedSortable').sortable({
 				connectWith: ".connectedSortable",
@@ -157,24 +156,24 @@ $(document).ready(function() {
 	});
 	
 	$(document).on('click', '.showSort', function() {
+		updateReaderNames();
 		$('.sortSection').toggle();
 	});
 	
-	$('.sortDiv').on('click', 'span h3', function() {
+	$('.sortWrapper').on('click', 'span h3', function() {
 		$(this).hide();
 		$(this).siblings('input').show().focus().select();
 	});
 	
-	$('.sortDiv').on('focusout', 'input', function() {
+	$('.sortWrapper').on('focusout', 'input', function() {
 		$('.sortDiv span h3').each(function() {
 			$(this).html($(this).siblings('input').val());
 		});
 		$('.sortDiv input').hide();
 		$('.sortDiv h3').show();
-		updateReaderNames();
 	});
 
-	$('.sortDiv').on('keypress', 'input', function(event) {
+	$('.sortWrapper').on('keypress', 'input', function(event) {
 		if (event.keyCode == 13) {
 			$(this).trigger('focusout');
 		}
