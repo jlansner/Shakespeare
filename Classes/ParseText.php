@@ -11,6 +11,7 @@ class ParseText {
 		$this->title = $this->xml->TITLE;
 		if ($act) {
 			$this->actNumber = str_split($act);
+			sort($this->actNumber);
 			if (count($this->actNumber) == 1) {
 				$this->title .= ' - Act ' . $this->actNumber[0];
 			} else {

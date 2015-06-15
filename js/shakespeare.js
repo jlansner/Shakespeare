@@ -63,10 +63,10 @@ $(document).ready(function() {
 	$('.connectedSortable li').click(function() {
 
 		if ($(this).hasClass('active')) {
-			$('.connectedSortable li').removeClass('conflict active').children('.conflicts').html('&nbsp;');
+			$('.connectedSortable li').removeClass('conflict active').find('.conflicts').html('&nbsp;');
 		} else {
 
-			$('.connectedSortable li').removeClass('conflict active').children('.conflicts').html('&nbsp;');
+			$('.connectedSortable li').removeClass('conflict active').find('.conflicts').html('&nbsp;');
 	
 			$(this).addClass('active');
 	
@@ -77,9 +77,9 @@ $(document).ready(function() {
 					var char2 = $(this).attr('id').replace(/_/g,' ');
 					if (char1 != char2) {
 						if (conversations[char1][char2] == 1) {
-							$(this).addClass('conflict').children('.conflicts').html(conversations[char1][char2] + ' conversation');
+							$(this).addClass('conflict').find('.conflicts').html(conversations[char1][char2] + ' conversation');
 						} else if (conversations[char1][char2] > 0) {
-							$(this).addClass('conflict').children('.conflicts').html(conversations[char1][char2] + ' conversations');
+							$(this).addClass('conflict').find('.conflicts').html(conversations[char1][char2] + ' conversations');
 						}
 					}
 				}
@@ -156,6 +156,10 @@ $(document).ready(function() {
 		$(this).siblings('input').trigger('click');
 	});
 	
+	$(document).on('click', '.showSort', function() {
+		$('.sortSection').toggle();
+	});
+	
 	$('.sortDiv').on('click', 'span h3', function() {
 		$(this).hide();
 		$(this).siblings('input').show().focus().select();
@@ -170,5 +174,16 @@ $(document).ready(function() {
 		updateReaderNames();
 	});
 
+	$('.sortDiv').on('keypress', 'input', function(event) {
+		if (event.keyCode == 13) {
+			$(this).trigger('focusout');
+		}
+	});
+	
+	$(document).on('scroll', function() {
+		var percent = (Math.round(window.scrollY / $(document).height() * 10000) / 100) + "%";
+		$('.completed').width(percent);
+		$('.percentText').html(percent);
+	});
 	updateReaderNames();
 });

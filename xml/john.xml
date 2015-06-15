@@ -18,13 +18,19 @@
 
 <PERSONA>
 	<name>KING JOHN</name>
+	<display_name>King John</display_name>
 	<canonical_name>king_john</canonical_name>
 </PERSONA>
 <PERSONA>
 	<name>PRINCE HENRY, son to the king.</name>
+	<display_name>Prince Henry</display_name>
 	<canonical_name>prince_henry</canonical_name>
 	</PERSONA>
-<PERSONA>ARTHUR, Duke of Bretagne, nephew to the king.</PERSONA>
+<PERSONA>
+	<name>ARTHUR, Duke of Bretagne, nephew to the king.</name>
+	<display_name>Arthur</display_name>
+	<canonical_name>arthur</canonical_name>
+</PERSONA>
 <PERSONA>The Earl of PEMBROKE</PERSONA>
 <PERSONA>The Earl of ESSEX</PERSONA>
 <PERSONA>The Earl of SALISBURY</PERSONA>

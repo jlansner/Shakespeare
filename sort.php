@@ -27,7 +27,7 @@ $readers = $parsedText->assign_roles($_GET['readers']);
 		readers = <?php echo $_GET['readers']; ?>;
 	</script>
 
-	<script type="text/javascript" src="/js/shakespeare.js"></script>
+	<script type="text/javascript" src="/js/shakespeare.min.js"></script>
 	<script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -43,13 +43,24 @@ $readers = $parsedText->assign_roles($_GET['readers']);
 </script>
 	</head>
 	<body>
-	<h1><?php echo $parsedText->title; ?></h1>
+
+	<div class="header">
+		<h1><?php echo $parsedText->title; ?></h1>
+		<div class="totalPlay">
+			<span class="percentText">0%</span>
+		<span class="completed"></span>
+		</div>
+	    <div class="showSort">
+	        Show/Hide Sort Options
+	    </div>
+	</div>
+		
+		<div class="sortSection">
+	
 	<p>Total Speeches - <?php echo $parsedText->totalSpeeches; ?><br />
 	Total Lines - <?php echo number_format($parsedText->totalLines); ?><br />
 	Characters - <?php echo count($parsedText->characters); ?><br />
-	<a href="/text/<?php echo $_GET['play']; ?>" target="_blank">Original Text</a>
 	</p>
-
 
 <h2>Roles - <?php echo $_GET['readers']; ?> Readers</h2>
 <h3 class="addReader">Add Reader</h3>
@@ -75,9 +86,9 @@ foreach ($readers as $reader) { ?>
 		<ul id="reader<?php echo $i; ?>" class="connectedSortable reader">
 <?php }
 		foreach ($reader as $role) {
-			echo '<li id="' . $role . '" class="ui-state-default">' . $parsedText->characters[$role]['display_name'] . '<br />
-				<span class="lines">' . $parsedText->characters[$role]['lines'] . '</span> Lines<br />
-				<span class="conflicts">&nbsp;</span></li>';
+			echo '<li id="' . $role . '" class="ui-state-default">' . ucwords(strtolower($parsedText->characters[$role]['display_name'])) . '<br />
+				<span><span class="lines">' . $parsedText->characters[$role]['lines'] . '</span> Lines<br />
+				<span class="conflicts">&nbsp;</span></span></li>';
 		}
 ?>		
 	</ul>
@@ -87,35 +98,40 @@ foreach ($readers as $reader) { ?>
 }
 ?>
 </div>
+</div>
 <div class="play">
 <?php
 $line = 0;
- foreach($parsedText->xml->ACT as $act) { ?>
-	<h2><?php echo $act->TITLE; ?></h2>
-	
-	<?php foreach($act->SCENE as $scene) { ?>
-		<h3><?php echo $scene->TITLE; ?></h3>
+$i = 1;
+foreach($parsedText->xml->ACT as $act) {
+ 	if ((!$parsedText->actNumber) || (in_array($i, $parsedText->actNumber))) { ?>
+		<h2><?php echo $act->TITLE; ?></h2>
 		
-		<?php foreach($scene->children() as $child) { 
-			if ($child->getName() == "STAGEDIR") { ?>
-				<blockquote class="stage_direction"><?php echo $child; ?></blockquote>
-			<?php } elseif ($child->getName() == "SPEECH") { ?>
-				<h4 class="<?php echo $parsedText->canonical_name($child->SPEAKER); ?>"><?php echo $child->SPEAKER; ?> <span class="reader"></span></h4>
-				<p class="<?php echo $parsedText->canonical_name($child->SPEAKER); ?>">						
-					<?php foreach($child->children() as $speechChild) {
-						if ($speechChild->getName() == "LINE") { 
-							$line++;
-							echo $speechChild . "<br />";
-						} else if ($speechChild->getName() == "STAGEDIR") { ?>
-						</p>
-							<blockquote><?php echo $speechChild; ?></blockquote>
-							<p class="<?php echo strtolower($child->SPEAKER); ?>">
-					<?php }
-				} ?>
-			</p>
-			<?php }
+		<?php foreach($act->SCENE as $scene) { ?>
+			<h3><?php echo $scene->TITLE; ?></h3>
+			
+			<?php foreach($scene->children() as $child) { 
+				if ($child->getName() == "STAGEDIR") { ?>
+					<blockquote class="stage_direction"><?php echo $child; ?></blockquote>
+				<?php } elseif ($child->getName() == "SPEECH") { ?>
+					<h4 class="<?php echo $parsedText->canonical_name($child->SPEAKER); ?>"><?php echo $child->SPEAKER; ?> <span class="reader"></span></h4>
+					<p class="<?php echo $parsedText->canonical_name($child->SPEAKER); ?>">						
+						<?php foreach($child->children() as $speechChild) {
+							if ($speechChild->getName() == "LINE") { 
+								$line++;
+								echo $speechChild . "<br />";
+							} else if ($speechChild->getName() == "STAGEDIR") { ?>
+							</p>
+								<blockquote><?php echo $speechChild; ?></blockquote>
+								<p class="<?php echo strtolower($child->SPEAKER); ?>">
+						<?php }
+					} ?>
+				</p>
+				<?php }
+			}
 		}
 	}
+	$i++;
 }
 ?>
 </div>
