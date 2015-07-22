@@ -252,8 +252,11 @@ class ParseText {
 			if (($speaker == "GLOUCESTER") || ($speaker == "KING RICHARD III")) {
 				$speaker = "GLOUCESTER/KING RICHARD III";
 			}
+		} else if ($this->xml_file == "hen_viii") {
+		        if (($speaker == "KATHARINE") || ($speaker == "QUEEN KATHARINE")) {
+		               $speaker = "KATHARINE";
+     		       }
 		}
-		
 		return $speaker;
 	}	
 };

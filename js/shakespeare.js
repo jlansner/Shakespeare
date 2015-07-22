@@ -1,3 +1,12 @@
+var highlightColors = [
+		"#ffc",
+		"#ccf",
+		"#fcc",
+		"#cff",
+		"#fcf",
+		"#cfc" 
+	];
+
 function showCharLines() {
 	$('h5').removeClass();
 	$('.sortDiv').each(function() {
@@ -52,10 +61,29 @@ function checkConflicts() {
 
 function updateReaderNames() {
 	$('.sortDiv li').each(function() {
-		var reader = $(this).parent().parent().find('input').val();
+		var reader = $(this).parent().parent().find('.renameReader').val();
 		$('h4.' + $(this).attr('id')).find('.reader').html('(' + reader + ')');
 	});
+}
 
+function addHighlighting() {
+	var i = 0;
+	$('.sortDiv').each(function() {
+		var highlight = false;
+		if ($(this).find('.highlightInput').is(':checked")) {
+			highlight = true;
+		}
+		$(this).find('li').each(function() {
+			$('.' + $(this).attr('id')).removeAttr('style');
+			if (highlight) {
+				$('.' + $(this).attr('id')).css('background-color',highlightColors[i]);
+			}
+		});
+		
+		if (highlight) {
+			i++;
+		}
+	});
 }
 
 $(document).ready(function() {
@@ -93,7 +121,6 @@ $(document).ready(function() {
 			updateRoles();
 			checkConflicts();
 			showCharLines();
-			updateReaderNames();		
 		},
 		placeholder: "ui-state-highlight"
 	}).disableSelection();
@@ -104,7 +131,7 @@ $(document).ready(function() {
 		readers++;
 		
 		if ($('.sortDiv').last().children('ul').hasClass('reader')) {
-			$('.sortWrapper').append('<div class="sortDiv"><h3>Reader ' + readers + '</h3><h4>0 lines</h4><h5>0%</h5><ul id="reader' + readers + '" class="connectedSortable reader"></ul></div>');
+			$('.sortWrapper').append('<div class="sortDiv"><span><h3>Reader ' + readers + '</h3><input name="reader" type="text" class="renameReader" value="Reader ' + readers + '"></span><h4>0 lines</h4><h5>0%</h5><ul id="reader' + readers + '" class="connectedSortable reader"></ul></div>');
 					
 			$('.connectedSortable').sortable({
 				connectWith: ".connectedSortable",
@@ -125,15 +152,6 @@ $(document).ready(function() {
 		showCharLines();
 	});
 	
-	highlightColors = [
-		"#ffc",
-		"#ccf",
-		"#fcc",
-		"#cff",
-		"#fcf",
-		"#cfc" 
-	];
-
 	$(document).on('change', '.characters input', function() {
 		var i = 0;
 		$('.characters input').each(function() {
@@ -157,24 +175,25 @@ $(document).ready(function() {
 	});
 	
 	$(document).on('click', '.showSort', function() {
+		updateReaderNames();
+		addHighlighting();
 		$('.sortSection').toggle();
 	});
 	
-	$('.sortDiv').on('click', 'span h3', function() {
+	$('.sortWrapper').on('click', 'span h3', function() {
 		$(this).hide();
-		$(this).siblings('input').show().focus().select();
+		$(this).siblings('.renameReader').show().focus().select();
 	});
 	
-	$('.sortDiv').on('focusout', 'input', function() {
+	$('.sortWrapper').on('focusout', '.renameReader', function() {
 		$('.sortDiv span h3').each(function() {
-			$(this).html($(this).siblings('input').val());
+			$(this).html($(this).siblings('.renameReader').val());
 		});
-		$('.sortDiv input').hide();
-		$('.sortDiv h3').show();
-		updateReaderNames();
+		$('.sortDiv span .renameReader').hide();
+		$('.sortDiv span h3').show();
 	});
 
-	$('.sortDiv').on('keypress', 'input', function(event) {
+	$('.sortWrapper').on('keypress', '.renameReader', function(event) {
 		if (event.keyCode == 13) {
 			$(this).trigger('focusout');
 		}
