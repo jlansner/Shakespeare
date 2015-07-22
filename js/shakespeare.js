@@ -4,7 +4,7 @@ var highlightColors = [
 		"#fcc",
 		"#cff",
 		"#fcf",
-		"#cfc" 
+		"#cfc",
 	];
 
 function showCharLines() {
@@ -70,13 +70,13 @@ function addHighlighting() {
 	var i = 0;
 	$('.sortDiv').each(function() {
 		var highlight = false;
-		if ($(this).find('.highlightInput').is(':checked")) {
+		if ($(this).find('.highlightInput').is(':checked')) {
 			highlight = true;
 		}
 		$(this).find('li').each(function() {
 			$('.' + $(this).attr('id')).removeAttr('style');
 			if (highlight) {
-				$('.' + $(this).attr('id')).css('background-color',highlightColors[i]);
+				$('.' + $(this).attr('id')).css('background-color',highlightColors[i % highlightColors.length]);
 			}
 		});
 		
@@ -151,7 +151,7 @@ $(document).ready(function() {
 		
 		showCharLines();
 	});
-	
+
 	$(document).on('change', '.characters input', function() {
 		var i = 0;
 		$('.characters input').each(function() {
@@ -194,6 +194,7 @@ $(document).ready(function() {
 	});
 
 	$('.sortWrapper').on('keypress', '.renameReader', function(event) {
+
 		if (event.keyCode == 13) {
 			$(this).trigger('focusout');
 		}
