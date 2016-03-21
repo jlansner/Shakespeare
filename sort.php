@@ -54,7 +54,8 @@ $readers = $parsedText->assign_roles($_GET['readers']);
 	        Show/Hide Sort Options
 	    </div>
 	</div>
-		
+		<?php 				var_export($parsedText->play);
+		?>
 		<div class="sortSection">
 	
 	<p>Total Speeches - <?php echo $parsedText->totalSpeeches; ?><br />
@@ -88,8 +89,24 @@ foreach ($readers as $reader) { ?>
 <?php }
 		foreach ($reader as $role) {
 			echo '<li id="' . $role . '" class="ui-state-default">' . ucwords(strtolower($parsedText->characters[$role]['display_name'])) . '<br />
-				<span><span class="lines">' . $parsedText->characters[$role]['lines'] . '</span> Lines<br />
-				<span class="conflicts">&nbsp;</span></span></li>';
+				<span>
+				<span class="lines">' . $parsedText->characters[$role]['lines'] . '</span> Lines<br />
+				<table class="actLines">
+				<tr>';
+			foreach ($parsedText->play as $act => $scenes) {
+				echo "<th>" . str_replace("ACT ", "",$act) . "</th>";
+			}
+			echo '</tr><tr>';
+			foreach ($parsedText->play as $act => $scenes) {
+				$actLines = 0;
+				foreach ($scenes as $scene) {
+					$actLines += $parsedText->characters[$role]['PLAY'][$act][$scene];
+				}
+				echo '<td>' . $actLines . '</td>';
+			}
+				echo '</tr></table>
+				<span class="conflicts">&nbsp;</span>
+				</span></li>';
 		}
 ?>		
 	</ul>

@@ -18,10 +18,12 @@ function showCharLines() {
 		
 		$(this).find('h4').html(charLines + ' Lines');
 		var percent = Math.round((charLines / totalLines) * 10000) / 100 + '%';
-		if (charLines > totalLines / readers) {
+		if (charLines > (totalLines / readers) * 1.25) {
 			$(this).find('h5').html(percent).addClass('positive');
-		} else {
+		} else if (charLines < (totalLines / readers) * .75) {
 			$(this).find('h5').html(percent).addClass('negative');			
+		} else {
+			$(this).find('h5').html(percent);
 		}
 	});
 }
@@ -98,11 +100,11 @@ $(document).ready(function() {
 	
 			$(this).addClass('active');
 	
-			var char1 = $(this).attr('id').replace(/_/g,' ');
+			var char1 = $(this).attr('id'); //.replace(/_/g,' ');
 	
 			$('.connectedSortable li').each(function() {
 				if ($(this).attr('id')) {
-					var char2 = $(this).attr('id').replace(/_/g,' ');
+					var char2 = $(this).attr('id'); //.replace(/_/g,' ');
 					if (char1 != char2) {
 						if (conversations[char1][char2] == 1) {
 							$(this).addClass('conflict').find('.conflicts').html(conversations[char1][char2] + ' conversation');

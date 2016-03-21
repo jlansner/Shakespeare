@@ -93,14 +93,14 @@ class ParseText {
 	private function createCharacterArray() {
 		
 	    if ($this->actNumber) {
-			$this->play['ACT ' . $this->actNumber] = array();
 			$act_number = 1;
 			$scene_number = 1;
 	
 			foreach ($this->xml->ACT as $act) {
 				if (in_array($act_number,$this->actNumber)) {
+					$this->play['ACT ' . $act_number] = array();
 					foreach ($act->SCENE as $scene) {
-						$this->createSceneArray($scene,$this->actNumber,$scene_number);
+						$this->createSceneArray($scene,$act_number,$scene_number);
 						$scene_number++;
 					}
 				}
@@ -160,13 +160,15 @@ class ParseText {
 		}
 
     if ($this->actNumber) {
-      if (is_array($this->lines['ACT ' . $this->actNumber])) {
-        foreach ($this->lines['ACT ' . $this->actNumber] as $scene) {
-	        $this->assignConversations($scene);
-         }
-      } else {
-        header( 'Location: /' .  $this->xml_file . '/sort/' . $this->readers) ;
-      }
+    	$act_number = 1;
+      foreach ($this->lines as $act) {
+				if (in_array($act_number,$this->actNumber)) {
+        foreach ($act as $scene) {
+		 $this->assignConversations($scene);
+		}
+				}
+				$act_number++;
+	  }
     } else {
       foreach ($this->lines as $act) {
         foreach ($act as $scene) {

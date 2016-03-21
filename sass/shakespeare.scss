@@ -1,31 +1,33 @@
 @import 'compass';
 body {
     font-family: arial, helvetica;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 table, th, td {
     font-size: 10px;
 }
 
-table {
-    margin-bottom: 10px;
-}
-
-tbody {
-  th {
-    text-align: left;
-   }
-}
-
-td {
-    text-align: center;
-
-  &:first-child, &:nth-child(2) {
-    text-align: left;
+#tabs {
+  table {
+      margin-bottom: 10px;
   }
-
-}    
+  
+  tbody {
+    th {
+      text-align: left;
+     }
+  }
+  
+  td {
+      text-align: center;
+  
+    &:first-child, &:nth-child(2) {
+      text-align: left;
+    }
+  
+  }   
+} 
 .green {
     background-color: #0c0;
 }
@@ -71,6 +73,11 @@ td {
       margin: 0 0 5px 0;
       font-size: 1em;
   }
+  
+  p {
+    text-align: center;
+    margin: 0;
+  }
 }
 
 .connectedSortable {
@@ -85,7 +92,6 @@ td {
   li {
       margin: 5px;
       padding: 5px;
-      font-size: 1.2em;
       width: 120px; 
       text-align: center;
       
@@ -300,4 +306,16 @@ h1 {
     font-style: italic;
   }
   
+}
+
+.actLines {
+  width: 100%;
+  border-collapse: collapse;
+  margin: .25em 0;
+
+  td, th {
+    text-align: center;
+    width: 20%;
+    border: 1px solid #ccc;
+  }
 }
