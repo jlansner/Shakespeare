@@ -1887,8 +1887,12 @@ ANGELO, and BALTHAZAR</STAGEDIR>
 <SPEAKER>DROMIO OF SYRACUSE</SPEAKER>
 <LINE>I am an ass, I am a woman's man and besides myself.</LINE>
 </SPEECH>
+  <SPEECH>
+    <SPEAKER>ANTIPHOLUS OF SYRACUSE</SPEAKER>
+    <LINE>What woman's man? and how besides thyself? besides thyself?</LINE>
+</SPEECH>
 
-<SPEECH>
+  <SPEECH>
 <SPEAKER>DROMIO OF SYRACUSE</SPEAKER>
 <LINE>Marry, sir, besides myself, I am due to a woman; one</LINE>
 <LINE>that claims me, one that haunts me, one that will have me.</LINE>
@@ -3001,6 +3005,11 @@ Antipholus of Ephesus</STAGEDIR>
 <LINE>your blows.</LINE>
 </SPEECH>
 
+  <SPEECH>
+    <SPEAKER>ANTIPHOLUS OF EPHESUS</SPEAKER>
+    <LINE>Thou art sensible in nothing but blows, and so is an</LINE>
+    <LINE>ass.</LINE>
+  </SPEECH>
 
 
 <SPEECH>
@@ -4120,6 +4129,11 @@ Headsman and other Officers</STAGEDIR>
 <SPEECH>
 <SPEAKER>AEGEON</SPEAKER>
 <LINE>Why look you strange on me? you know me well.</LINE>
+</SPEECH>
+  
+<SPEECH>
+<SPEAKER>ANTIPHOLUS OF EPHESUS</SPEAKER>
+<LINE>I never saw you in my life till now.</LINE>
 </SPEECH>
 
 <SPEECH>

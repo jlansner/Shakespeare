@@ -54,8 +54,6 @@ $readers = $parsedText->assign_roles($_GET['readers']);
 	        Show/Hide Sort Options
 	    </div>
 	</div>
-		<?php 				var_export($parsedText->play);
-		?>
 		<div class="sortSection">
 	
 	<p>Total Speeches - <?php echo $parsedText->totalSpeeches; ?><br />

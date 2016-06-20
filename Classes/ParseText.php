@@ -159,24 +159,12 @@ class ParseText {
 			}
 		}
 
-    if ($this->actNumber) {
-    	$act_number = 1;
-      foreach ($this->lines as $act) {
-				if (in_array($act_number,$this->actNumber)) {
-        foreach ($act as $scene) {
-		 $this->assignConversations($scene);
-		}
-				}
-				$act_number++;
-	  }
-    } else {
-      foreach ($this->lines as $act) {
-        foreach ($act as $scene) {
-          $this->assignConversations($scene);
-        }
-      }
-    }
-		
+		foreach ($this->lines as $act) {
+        	foreach ($act as $scene) {
+          		$this->assignConversations($scene);
+        	}
+     	}
+			
 		foreach ($this->conversations as $speaker => $interactions) {
 			foreach ($interactions as $key => $value) {
 				if ($value > 0) {
@@ -195,7 +183,6 @@ class ParseText {
       $previousSpeaker = "";
       foreach ($scene as $speech) {
 	      $this->totalLines += $speech['Lines'];
-		
 	      $currentSpeaker = $speech['Speaker'];		  
 		  $currentSpeaker = $this->combined_name($currentSpeaker);
 
