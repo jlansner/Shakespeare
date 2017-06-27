@@ -75,13 +75,13 @@ foreach ($readers as $reader) { ?>
 		<h3>Reader <?php echo $i; ?></h3>
 		<input name="reader" type="text" class="renameReader" value="Reader <?php echo $i; ?>" />
 		</span>
-		<p><input name="highilght" type="checkbox" class="highlightInput" /> Highlight</p>
+		<?php // <p><input name="highilght" type="checkbox" class="highlightInput" /> Highlight</p> ?>
 		<h4>Lines</h4>
 		<h5>Percent</h5>
 		<ul id="reader<?php echo $i; ?>" class="connectedSortable reader">
 <?php }
 		foreach ($reader as $role) {
-			echo '<li id="' . $role . '" class="ui-state-default">' . ucwords(strtolower($parsedText->characters[$role]['name'])) . '<br />
+			echo '<li id="' . $role . '" class="ui-state-default">' . $parsedText->characters[$role]['name'] . '<br />
 				<span>
 				<span class="lines">' . $parsedText->characters[$role]['lines']['total'] . '</span> Lines<br />
 				<table class="actLines">

@@ -4,7 +4,7 @@ class ParseTextFolgers {
 	
 	public function __construct($xml_file, $readers = null) {
     	$this->xml_file = $xml_file;
-		$this->xml = simplexml_load_file('xml/' . $xml_file . '.xml');
+		$this->xml = simplexml_load_file('xml_folgers/' . $xml_file . '.xml');
         $this->xml->registerXPathNamespace('tei', 'http://www.tei-c.org/ns/1.0');
 	
 		$this->sortField = 'interactions';
@@ -111,11 +111,13 @@ class ParseTextFolgers {
             if ($name) {
                 $this->characters[$name] = array();
                 $this->characters[$name]['id'] = $name;
-                if ($result->xpath('persName/name')) {
-                    $charName = $result->xpath('persName/name');
+                if ($result->persName->name) {
+                    $charName = $result->persName->name;
                     $this->characters[$name]['name'] = (string)$charName[0];
                 } else {
-                    $charName = str_replace("_TNK","",$name);
+                    if (strpos($name,"_")) {
+                        $charName = substr($name,0,strpos($name,"_"));
+                    }
                     if (preg_match('/[1-9]/', substr($charName,-1))) {
                         $charName = substr($charName,-1) . " " . strtolower(substr($charName,0,-2));
                         if (preg_match('/\.[a-z0-9]/', substr($charName,-2))) {
