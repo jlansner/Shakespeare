@@ -15,7 +15,7 @@ class FileList {
 
 				$file = new SplFileObject('xml_folgers/' . $item);
 				if (!$file->eof()) {
-			    	$file->seek(6);
+			    	$file->seek(6);  // this only works because XML files have been standardized
 				    $title = $file->current();
 				}
 				$plays[substr($item,0,-4)] = substr($title,7,-9);

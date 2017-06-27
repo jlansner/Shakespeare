@@ -124,7 +124,7 @@ class ParseTextFolgers {
                             $charName = substr($charName,0,-2);
                         }
                     }
-                    $charName = ucwords(str_replace(".", " ", $charName));
+                    $charName = ucwords(strtolower(str_replace(".", " ", $charName)));
                     $this->characters[$name]['name'] = $charName;
                 }
             }
