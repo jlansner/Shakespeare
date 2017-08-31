@@ -10,6 +10,7 @@ $readers = $parsedText->assign_roles($_GET['readers']);
 <html>
 <head>
 	<title><?php echo $parsedText->title;?></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		
 	<link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 	<link rel="stylesheet" type="text/css" href="/css/shakespeare.css" />
