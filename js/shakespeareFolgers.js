@@ -181,6 +181,15 @@ $(document).ready(function() {
 		addHighlighting();
 		$('.sortSection').toggle();
 	});
+
+	$(document).on('change', '#lineNumberDisplay', function() {
+		$('.sceneLine, .playLine').hide();
+		if ($(this).val() == 'scene') {
+			$('.sceneLine').show();
+		} else if ($(this).val() == 'play') {
+			$('.playLine').show();
+		}
+	});
 	
 	$('.sortWrapper').on('click', 'span h3', function() {
 		$(this).hide();

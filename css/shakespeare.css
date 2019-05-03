@@ -285,13 +285,28 @@ table.infoTable td {
   /* line 305, ../sass/shakespeare.scss */
   .play blockquote {
     font-style: italic; }
+  /* line 309, ../sass/shakespeare.scss */
+  .play p {
+    width: 25em; }
+  /* line 313, ../sass/shakespeare.scss */
+  .play .lineNumber {
+    display: block;
+    float: right;
+    display: none; }
+  /* line 319, ../sass/shakespeare.scss */
+  .play .stageDirection {
+    font-style: italic; }
+  /* line 323, ../sass/shakespeare.scss */
+  .play > .stageDirection {
+    display: block;
+    padding: 0 1em; }
 
-/* line 311, ../sass/shakespeare.scss */
+/* line 329, ../sass/shakespeare.scss */
 .actLines {
   width: 100%;
   border-collapse: collapse;
   margin: .25em 0; }
-  /* line 316, ../sass/shakespeare.scss */
+  /* line 334, ../sass/shakespeare.scss */
   .actLines td, .actLines th {
     text-align: center;
     width: 20%;

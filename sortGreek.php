@@ -1,8 +1,8 @@
 <?php
 
-include('Classes/ParseTextFolgers.php');
+include('Classes/ParseTextGreek.php');
 
-$parsedText = new ParseTextFolgers($_GET['play']);	
+$parsedText = new ParseTextGreek($_GET['play']);	
 $readers = $parsedText->assign_roles($_GET['readers']);
 
 ?>
@@ -43,24 +43,16 @@ $readers = $parsedText->assign_roles($_GET['readers']);
 
 	<div class="header">
 		<h1><?php echo $parsedText->title; ?></h1>
-		<div class="totalPlay">
+	<!--	<div class="totalPlay">
 			<span class="percentText">0%</span>
 		<span class="completed"></span>
 		</div>
 	    <div class="showSort">
 	        Show/Hide Sort Options
-	    </div>
+	    </div> -->
 	</div>
 		<div class="sortSection">
 	
-		<p>Line Numbering: 
-			<select id="lineNumberDisplay">
-				<option>None</option>
-				<option value="scene">By Scene</option>
-				<option value="play">Within Play</option>
-			</select>
-		</p>
-
 	<p>Total Speeches - <?php echo $parsedText->totalSpeeches; ?><br />
 	Total Lines - <?php echo number_format($parsedText->totalLines); ?><br />
 	Characters - <?php echo count($parsedText->sortCharacters); ?><br />
@@ -84,7 +76,7 @@ foreach ($readers as $reader) { ?>
 		<h3>Reader <?php echo $i; ?></h3>
 		<input name="reader" type="text" class="renameReader" value="Reader <?php echo $i; ?>" />
 		</span>
-		<p><input name="highilght" type="checkbox" class="highlightInput" /> Highlight</p>
+		<?php // <p><input name="highilght" type="checkbox" class="highlightInput" /> Highlight</p> ?>
 		<h4>Lines</h4>
 		<h5>Percent</h5>
 		<ul id="reader<?php echo $i; ?>" class="connectedSortable reader">
@@ -122,7 +114,7 @@ foreach ($readers as $reader) { ?>
 ?>
 </div>
 </div>
-
+<?php /*
 <div class="play">
 
 <?php
@@ -132,7 +124,7 @@ foreach($parsedText->xml->xpath('//tei:div1') as $act) { ?>
 		<h2><?php 
         if ($act->head) {
             foreach ($act->head->children() as $child) {
-				echo $parsedText->getWords($child); 
+                echo $child;
             }        
     } else {
         echo strtoupper((string)$act->attributes()->type);
@@ -144,7 +136,7 @@ foreach($parsedText->xml->xpath('//tei:div1') as $act) { ?>
 			<h3><?php 
                 if ($scene->head) {
                     foreach ($scene->head->children() as $child) {
-						echo $parsedText->getWords($child); 
+                        echo $child;
                     }
                 } else {
                     echo ucfirst((string)$scene->attributes()->type);
@@ -152,31 +144,34 @@ foreach($parsedText->xml->xpath('//tei:div1') as $act) { ?>
              ?></h3>
 			
 			<?php foreach($scene->children() as $child) { 
-				if ($child->getName() == "stage") { 
-					echo '<span class="stageDirection">' . $parsedText->getWords($child) . '</span>'; 	
-				} elseif ($child->getName() == "sp") { ?>
+				if ($child->getName() == "stage") { ?>
+					<blockquote class="stage_direction"><?php echo $child; ?></blockquote>
+				<?php } elseif ($child->getName() == "sp") { ?>
 					<h4 class="<?php echo $child->attributes()->who; ?>"><?php 
-                    foreach ($child->speaker->children() as $speaker) {
+                    foreach($child->speaker->children() as $speaker) {
                         echo $speaker;
-					} 
-					if ($child->stage) {
-						echo $parsedText->getWords($child->stage); 
+
+                    }
+                    ?> <span class="reader"></span></h4>
+					<p class="<?php echo $parsedText->canonical_name($child->SPEAKER); ?>">						
+						<?php foreach($child->children() as $speechChild) {
+							if ($speechChild->getName() == "LINE") { 
+								$line++;
+								echo $speechChild . "<br />";
+							} else if ($speechChild->getName() == "STAGEDIR") { ?>
+							</p>
+								<blockquote><?php echo $speechChild; ?></blockquote>
+								<p class="<?php echo strtolower($child->SPEAKER); ?>">
+						<?php }
 					} ?>
-					<span class="reader"></span></h4>
-					<p class="<?php echo $child->attributes()->who; ?>">						
-						<?php
-						echo $parsedText->getWords($child->ab); 
-					?>
-					</p>
-				<?php
-					
-				} 
+				</p>
+				<?php }
 			}
 		}
 	
 	$i++;
 }
 ?>
-</div>
+</div>*/ ?>
 </body>
 </html>

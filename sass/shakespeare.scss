@@ -306,6 +306,24 @@ h1 {
     font-style: italic;
   }
   
+  p {
+    width: 25em;
+  }
+
+  .lineNumber {
+    display: block;
+    float: right;
+    display: none;
+  }
+
+  .stageDirection {
+    font-style: italic;
+  }
+
+  > .stageDirection {
+    display: block;
+    padding: 0 1em;
+  }
 }
 
 .actLines {

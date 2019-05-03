@@ -1,14 +1,13 @@
 <?php
 
-class ParseTextFolgers {
+class ParseTextGreek {
 	
 	public function __construct($xml_file, $readers = null) {
     	$this->xml_file = $xml_file;
-		$this->xml = simplexml_load_file('xml_folgers/' . $xml_file . '.xml');
+		$this->xml = simplexml_load_file('xml_greek' . $xml_file . '.xml');
         $this->xml->registerXPathNamespace('tei', 'http://www.tei-c.org/ns/1.0');
 	
-        $this->sortField = 'interactions';
-        $this->wordTags = array('w','c','pc');
+		$this->sortField = 'interactions';
     	$this->actNumber = null;
 		$this->title = $this->xml->teiHeader->fileDesc->titleStmt->title;
 
@@ -102,35 +101,7 @@ class ParseTextFolgers {
  		}
 	
 		return $roles;
-    }
-    
-    public function getWords($element) {
-        $textString = '';
-        foreach($element->children() as $word) {
-            if ($word->getName() == 'lb') {
-                $textString .= '<br />';
-            } else if (in_array($word->getName(), $this->wordTags)) {
-                $textString .= $word;
-            } else if ($word->getName() == 'milestone' && $word->attributes()->unit == 'ftln') {
-                $sceneLine = substr($word->attributes()->n,strrpos($word->attributes()->n,'.') + 1);
-                if ($sceneLine % 5 == 0) {
-                    $textString .= '<span class="lineNumber sceneLine">' . $sceneLine . '</span>';
-                }
-                $playLine = str_replace('ftln-','',$word->attributes('xml',true)->id);
-                if ($playLine % 5 == 0) {
-                    $textString .= '<span class="lineNumber playLine">' . ($playLine * 1) . '</span>';
-                }
-            } else if ($word->getName() == 'q') {
-                $textString .= '&ldquo;' . $this->getWords($word) . '&rdquo;';
-            } else if ($word->getName() == 'foreign') {
-                $textString .= '<em>' . $this->getWords($word) . '</em>';
-            } else if ($word->getName() == 'stage') {
-                $textString .= '<span class="stageDirection">' . $this->getWords($word) . '</span>';
-            }
-        }
-
-        return $textString;
-    }
+	}
 
 	private function createCharacterArray() {
 
