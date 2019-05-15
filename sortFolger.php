@@ -74,21 +74,20 @@ $i = 1;
 
 foreach ($readers as $reader) { ?>
 	<div class="sortDiv">
-	<?php if ($i > $_GET['readers']) { ?>
-		<h3>Unassigned</h3>
-		<h4>Lines</h4>
-		<h5>Percent</h5>
-		<ul id="reader<?php echo $i; ?>" class="connectedSortable">
-	<?php } else { ?>
 		<span>
-		<h3>Reader <?php echo $i; ?></h3>
-		<input name="reader" type="text" class="renameReader" value="Reader <?php echo $i; ?>" />
+		<?php if ($i > $_GET['readers']) { ?>
+			<h3 class="unassignedReader">Unassigned</h3>
+			<input name="reader" type="text" class="renameReader" value="Unassigned" />
+		<?php } else { ?>
+			<h3>Reader <?php echo $i; ?></h3>
+			<input name="reader" type="text" class="renameReader" value="Reader <?php echo $i; ?>" />
+		<?php } ?>
 		</span>
-		<p><input name="highilght" type="checkbox" class="highlightInput" /> Highlight</p>
+		<p><input name="highilght" type="checkbox" class="highlightInput" /> <label for="highlight">Highlight</label></p>
 		<h4>Lines</h4>
 		<h5>Percent</h5>
 		<ul id="reader<?php echo $i; ?>" class="connectedSortable reader">
-<?php }
+<?php 
 		foreach ($reader as $role) {
 			echo '<li id="' . $role . '" class="ui-state-default">' . $parsedText->characters[$role]['name'] . '<br />
 				<span>
@@ -131,21 +130,16 @@ $i = 1;
 foreach($parsedText->xml->xpath('//tei:div1') as $act) { ?>
 		<h2><?php 
         if ($act->head) {
-            foreach ($act->head->children() as $child) {
-				echo $parsedText->getWords($child); 
-            }        
-    } else {
-        echo strtoupper((string)$act->attributes()->type);
-    }
-     
+			echo $parsedText->getWords($act->head);
+    	} else {
+    	    echo strtoupper((string)$act->attributes()->type);
+    	}
             ?></h2>
 		
 		<?php foreach($act->div2 as $scene) { ?>
 			<h3><?php 
                 if ($scene->head) {
-                    foreach ($scene->head->children() as $child) {
-						echo $parsedText->getWords($child); 
-                    }
+					echo $parsedText->getWords($scene->head); 
                 } else {
                     echo ucfirst((string)$scene->attributes()->type);
                 }
@@ -155,15 +149,13 @@ foreach($parsedText->xml->xpath('//tei:div1') as $act) { ?>
 				if ($child->getName() == "stage") { 
 					echo '<span class="stageDirection">' . $parsedText->getWords($child) . '</span>'; 	
 				} elseif ($child->getName() == "sp") { ?>
-					<h4 class="<?php echo $child->attributes()->who; ?>"><?php 
-                    foreach ($child->speaker->children() as $speaker) {
-                        echo $speaker;
-					} 
+					<h4 class="<?php echo str_replace('#', '', $child->attributes()->who); ?>"><?php 
+                        echo '<span class="name">' . $parsedText->getWords($child->speaker) . '</span>';
 					if ($child->stage) {
-						echo $parsedText->getWords($child->stage); 
+						echo '<span class="stageDirection">' . $parsedText->getWords($child->stage) . '</span>';
 					} ?>
 					<span class="reader"></span></h4>
-					<p class="<?php echo $child->attributes()->who; ?>">						
+					<p class="<?php echo str_replace('#', '', $child->attributes()->who); ?>">						
 						<?php
 						echo $parsedText->getWords($child->ab); 
 					?>

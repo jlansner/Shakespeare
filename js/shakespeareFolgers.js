@@ -78,7 +78,9 @@ function addHighlighting() {
 		$(this).find('li').each(function() {
 			$('.' + $(this).attr('id')).removeAttr('style');
 			if (highlight) {
-				$('.' + $(this).attr('id')).css('background-color',highlightColors[i % highlightColors.length]);
+				$('.' + $(this).attr('id')).css({
+					'background-color': highlightColors[i % highlightColors.length]
+				});
 			}
 		});
 		
@@ -132,8 +134,16 @@ $(document).ready(function() {
 	$(document).on('click', '.addReader', function() {
 		readers++;
 		
-		if ($('.sortDiv').last().children('ul').hasClass('reader')) {
-			$('.sortWrapper').append('<div class="sortDiv"><span><h3>Reader ' + readers + '</h3><input name="reader" type="text" class="renameReader" value="Reader ' + readers + '"></span><h4>0 lines</h4><h5>0%</h5><ul id="reader' + readers + '" class="connectedSortable reader"></ul></div>');
+		if ($('.sortDiv').last().find('h3').hasClass('unassignedReader')) {
+			$('.sortDiv').last().find('h3').removeClass('unassignedReader').html('Reader ' + readers);
+		} else {
+			$('.sortWrapper').append(
+				'<div class="sortDiv"><span><h3>Reader ' + readers + '</h3>' + 
+				'<input name="reader" type="text" class="renameReader" value="Reader ' + readers + '"></span>' +
+				'<p><input name="highilght" type="checkbox" class="highlightInput" /> Highlight</p>' +
+				'<h4>0 lines</h4>' +
+				'<h5>0%</h5>' + 
+				'<ul id="reader' + readers + '" class="connectedSortable reader"></ul></div>');
 					
 			$('.connectedSortable').sortable({
 				connectWith: ".connectedSortable",
@@ -143,10 +153,7 @@ $(document).ready(function() {
 					showCharLines();			
 				},
 				placeholder: "ui-state-highlight"
-			}).disableSelection();
-		} else {
-			$('.sortDiv').last().find('h3').html('Reader ' + readers);
-			$('.sortDiv').last().children('ul').addClass('reader');
+			}).disableSelection();			
 		}
 		
 		$('h2').html('Roles - ' + readers + ' Readers');
@@ -192,8 +199,10 @@ $(document).ready(function() {
 	});
 	
 	$('.sortWrapper').on('click', 'span h3', function() {
-		$(this).hide();
-		$(this).siblings('.renameReader').show().focus().select();
+		if (!$(this).hasClass('unassignedReader')) {
+			$(this).hide();
+			$(this).siblings('.renameReader').show().focus().select();
+		}
 	});
 	
 	$('.sortWrapper').on('focusout', '.renameReader', function() {

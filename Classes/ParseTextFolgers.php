@@ -126,6 +126,8 @@ class ParseTextFolgers {
                 $textString .= '<em>' . $this->getWords($word) . '</em>';
             } else if ($word->getName() == 'stage') {
                 $textString .= '<span class="stageDirection">' . $this->getWords($word) . '</span>';
+            } else if ($word->getName() == 'sound') {
+                $textString .= $this->getWords($word);
             }
         }
 

@@ -1,16 +1,16 @@
 @import 'compass';
 body {
-    font-family: arial, helvetica;
-    font-size: 14px;
+  font-family: 'Times New Roman';
+  font-size: 14px;
 }
 
 table, th, td {
-    font-size: 10px;
+  font-size: 10px;
 }
 
 #tabs {
   table {
-      margin-bottom: 10px;
+    margin-bottom: 10px;
   }
   
   tbody {
@@ -20,7 +20,7 @@ table, th, td {
   }
   
   td {
-      text-align: center;
+    text-align: center;
   
     &:first-child, &:nth-child(2) {
       text-align: left;
@@ -29,49 +29,50 @@ table, th, td {
   }   
 } 
 .green {
-    background-color: #0c0;
+  background-color: #0c0;
 }
 
 .ui-tabs .ui-tabs-panel {
-    overflow-x: auto;
+  overflow-x: auto;
 }
 
 .sortWrapper {
-    overflow-x: auto;
+  overflow-x: auto;
 }
 
 .sortDiv {
-    float: left;
-    width: 150px;
-
+  float: left;
+  width: 150px;
 
   h3 {
-      text-align: center;
-      margin: 0 0 5px 0;
+    text-align: center;
+    margin: 0 0 5px 0;
   }
   
   .renameReader {
-      display: none;
-      border: 0;
-      margin: 0 0 5px 0;
-      padding: 0;
-      width: 100%;
-      text-align: center;
-      font-size: 1.17em;
-      outline: 0 none;
+    display: none;
+    border: 0;
+    border-bottom: 1px solid #000;
+    margin: 0 0 5px 0;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+    font-family: inherit;
+    font-size: 1.17em;
+    outline: 0 none;
   }
   
   h4 {
-      text-align: center;
-      font-weight: normal;
-      font-style: italic;
-      margin: 0 0 5px 0;
+    text-align: center;
+    font-weight: normal;
+    font-style: italic;
+    margin: 0 0 5px 0;
   }
   
   h5 {
-      text-align: center;
-      margin: 0 0 5px 0;
-      font-size: 1em;
+    text-align: center;
+    margin: 0 0 5px 0;
+    font-size: 1em;
   }
   
   p {
@@ -81,84 +82,84 @@ table, th, td {
 }
 
 .connectedSortable {
-    list-style-type: none;
-    margin: 0;
-    padding: 5px;
-    float: left;
-    margin: 0 5px;
-    width: 122px;
-    min-height: 60px;
+  list-style-type: none;
+  margin: 0;
+  padding: 5px;
+  float: left;
+  margin: 0 5px;
+  width: 122px;
+  min-height: 60px;
 
   li {
-      margin: 5px;
-      padding: 5px;
-      width: 120px; 
-      text-align: center;
+    margin: 5px;
+    padding: 5px;
+    width: 120px; 
+    text-align: center;
       
-      > span {
-        font-size: .8em;
-      }
+    > span {
+      font-size: .8em;
+    }
   }
 }
    
 .conflict {
-    color: #c00;
-    border-color: #c00;
-    font-weight: bold;
+  color: #c00;
+  border-color: #c00;
+  font-weight: bold;
 }
 
 .active {
-    color: #00c;
-    border-color: #00c;
-    font-weight: bold;
+  color: #00c;
+  border-color: #00c;
+  font-weight: bold;
 }
 
 .roleConflict {
-    color: #fff;
-    font-weight: bold;
-    background: #c00;    
+  color: #fff;
+  font-weight: bold;
+  background: #c00;    
 }
 
 .positive {
-    color: #090;
+  color: #090;
 }
 
 .negative {
-    color: #c00;
+  color: #c00;
 }
 
 .unassigned {
-    font-weight: bold;
-    color: #c00;
+  font-weight: bold;
+  color: #c00;
 }
 
 table.infoTable {
-    font-size: 12px;
-}
+  font-size: 12px;
 
-table.infoTable td, table.infoTable th {
+  td, th {
     vertical-align: top;
     font-size: 12px;
-}
+  }
 
-table.infoTable td {
+  td {
     text-align: left;
-}
-
-.infoTable ul {
+  }
+  
+  ul {
     padding: 0;
     margin: 0;
     list-style-type: none;
+  }
 }
 
-
 .ui-state-highlight {
-    height: 60px;
+  height: 60px;
 }
 
 .addReader {
-    cursor: pointer;
-    color: #00c;
+  cursor: pointer;
+  color: #00c;
+  display: inline-block;
 }
 
 .charactersWrapper {
@@ -178,46 +179,48 @@ table.infoTable td {
 
 .characters {
 	display: none;
-	padding: 1em;
+  padding: 1em;
+  
+  h2 {
+    margin-top: 0;
+  }
+  
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: inline-block;
+      width: 33%;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+  }
 }
 
-.showCharacters .characters {
-	display: block;
-}
-
-.characters h2 {
-	margin-top: 0;
-}
-
-.characters ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-}
-
-.characters ul li {
-	display: inline-block;
-	width: 33%;
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+.showCharacters {
+  .characters {
+	  display: block;
+  }
 }
 
 
 .acts {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-}
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
 
-.acts li {
+  li {
     display: inline-block;
     padding: 0 10px;
     border-left: 1px solid #ccc;
-}
 
-.acts li:first-child {
-    border-left: 0;
+    &:first-child {
+      border-left: 0;
+    }
+  }
 }
 
 .header {
@@ -295,19 +298,26 @@ h1 {
 
 
 .play {
+  width: 25em;
   padding: 80px 5px 5px 5px;
   line-height: 1.5em;
+  font-family: 'Times New Roman';
  
   h4 {
-    font-size: 1.2em;
-  }
+    font-size: 1.1em;
+    font-weight: normal;
 
-  blockquote {
-    font-style: italic;
+    .name {
+      font-size: .9em;
+    }
   }
   
   p {
-    width: 25em;
+    padding: 0 1em;
+
+    > br:first-child {
+      display: none;
+    }
   }
 
   .lineNumber {
