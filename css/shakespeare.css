@@ -1,7 +1,10 @@
 /* line 2, ../sass/shakespeare.scss */
 body {
   font-family: 'Times New Roman';
-  font-size: 14px; }
+  font-size: 14px; 
+    padding: 0;
+    margin: 0;
+}
 
 /* line 7, ../sass/shakespeare.scss */
 table, th, td {
@@ -215,6 +218,7 @@ table.infoTable {
   .header h1 {
     margin: 0 0 5px 0; }
   /* line 242, ../sass/shakespeare.scss */
+  
   .header .totalPlay {
     text-align: center;
     width: 75%;
@@ -224,6 +228,12 @@ table.infoTable {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     position: relative; }
+    
+    .header p {
+        float: right;
+        margin: 5px 10px;
+    }
+    
     /* line 250, ../sass/shakespeare.scss */
     .header .totalPlay .completed {
       background-color: #ccc;
@@ -236,24 +246,34 @@ table.infoTable {
     /* line 260, ../sass/shakespeare.scss */
     .header .totalPlay .percentText {
       z-index: 100;
-      width: 100%;
       position: absolute;
-      left: 0;
-      top: 6px; }
+      left: 50%;
+      top: 3px; 
+    padding: 3px 6px;
+    background: #fff;
+    border-radius: 5px;
+        
+    }
   /* line 268, ../sass/shakespeare.scss */
   .header .showSort {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 10px;
+    right: 10px;
     display: inline-block;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     border-radius: 3px;
     border: 1px solid #999;
-    background-color: #ccc;
-    font: 10px Arial;
+    background-color: #ddd;
+    font: 14px Arial;
     cursor: pointer;
-    padding: 3px; }
+    padding: 5px;
+  white-space: nowrap;
+  }
+    
+    .header .showSort .showSortOptions {
+        display: none;
+    }
 
 /* line 283, ../sass/shakespeare.scss */
 .sortSection {
@@ -273,9 +293,16 @@ table.infoTable {
 /* line 300, ../sass/shakespeare.scss */
 .play {
   width: 25em;
-  padding: 80px 5px 5px 5px;
+  padding: 5px;
   line-height: 1.5em;
-  font-family: 'Times New Roman'; }
+  font-family: 'Times New Roman';
+}
+
+.playWrapper {
+    height: calc( 100vh - 80px );
+    margin-top: 80px;
+    overflow: scroll;
+}
   /* line 306, ../sass/shakespeare.scss */
   .play h4 {
     font-size: 1.1em;
@@ -287,11 +314,9 @@ table.infoTable {
   .play p {
     padding: 0 1em; }
     /* line 318, ../sass/shakespeare.scss */
-    .play p > br:first-child {
-      display: none; }
+    
   /* line 323, ../sass/shakespeare.scss */
   .play .lineNumber {
-    display: block;
     float: right;
     display: none; }
   /* line 329, ../sass/shakespeare.scss */
@@ -312,3 +337,13 @@ table.infoTable {
     text-align: center;
     width: 20%;
     border: 1px solid #ccc; }
+
+.homePage {
+    padding: 5px;
+}
+
+.playList {
+    font-size: 120%;
+    line-height: 1.4em;
+    columns: 3;
+}

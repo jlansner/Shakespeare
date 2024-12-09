@@ -39,36 +39,39 @@ $readers = $parsedText->assign_roles($_GET['readers']);
 
 </script>
 	</head>
-	<body>
+<body>
 
-	<div class="header">
-		<h1><?php echo $parsedText->title; ?></h1>
-		<div class="totalPlay">
-			<span class="percentText">0%</span>
-		<span class="completed"></span>
-		</div>
-	    <div class="showSort">
-	        Show/Hide Sort Options
-	    </div>
-	</div>
-		<div class="sortSection">
+<div class="header">
+	<h1><?php echo $parsedText->title; ?></h1>
+	<p>Line Numbering: 
+	    <select id="lineNumberDisplay">
+		    <option>None</option>
+		    <option value="scene">By Scene</option>
+		    <option value="play">Within Play</option>
+	    </select>
+    </p>
+
+    <div class="totalPlay">
+	    <span class="percentText">0%</span>
+        <span class="completed"></span>
+    </div>
 	
-		<p>Line Numbering: 
-			<select id="lineNumberDisplay">
-				<option>None</option>
-				<option value="scene">By Scene</option>
-				<option value="play">Within Play</option>
-			</select>
-		</p>
+    <div class="showSort">
+        <span class="showSortOptions">Show Sort Options</span>
+        <span class="showText">Show Play Text</span>
+    </div>
+</div>
 
-	<p>Total Speeches - <?php echo $parsedText->totalSpeeches; ?><br />
-	Total Lines - <?php echo number_format($parsedText->totalLines); ?><br />
-	Characters - <?php echo count($parsedText->sortCharacters); ?><br />
-	</p>
+<div class="sortSection">
 
-<h2>Roles - <?php echo $_GET['readers']; ?> Readers</h2>
-<h3 class="addReader">Add Reader</h3>
-<div class="sortWrapper">
+    <p>Total Speeches - <?php echo $parsedText->totalSpeeches; ?><br />
+    Total Lines - <?php echo number_format($parsedText->totalLines); ?><br />
+    Characters - <?php echo count($parsedText->sortCharacters); ?><br />
+    </p>
+    
+    <h2>Roles - <?php echo $_GET['readers']; ?> Readers</h2>
+    <h3 class="addReader">Add Reader</h3>
+    <div class="sortWrapper">
 <?php
 $i = 1;
 
@@ -89,7 +92,8 @@ foreach ($readers as $reader) { ?>
 		<ul id="reader<?php echo $i; ?>" class="connectedSortable reader">
 <?php 
 		foreach ($reader as $role) {
-			echo '<li id="' . $role . '" class="ui-state-default">' . $parsedText->characters[$role]['name'] . '<br />
+			echo '<li id="' . $role . '" class="ui-state-default">' . $parsedText->characters[ $role ][ "name" ] . '<br />
+			<span class="state">' . $parsedText->characters[ $role ][ "state" ] . '<br />
 				<span>
 				<span class="lines">' . $parsedText->characters[$role]['lines']['total'] . '</span> Lines<br />
 				<table class="actLines">
@@ -119,22 +123,47 @@ foreach ($readers as $reader) { ?>
 	$i++;
 }
 ?>
-</div>
+    </div>  
 </div>
 
-<div class="play">
+<div class="playWrapper">
+    <div class="play">
 
 <?php
 $line = 0;
 $i = 1;
-foreach($parsedText->xml->xpath('//tei:div1') as $act) { ?>
+$speaker = "";
+
+foreach( $parsedText->xml->xpath('//tei:div1') as $act ) { ?>
 		<h2><?php 
-        if ($act->head) {
-			echo $parsedText->getWords($act->head);
+        if ( $act->head ) {
+			echo $parsedText->getWords( $act->head );
     	} else {
-    	    echo strtoupper((string)$act->attributes()->type);
+    	    echo strtoupper( (string)$act->attributes()->type );
     	}
             ?></h2>
+		
+		<?php foreach($act->children() as $child) { 
+				if ($child->getName() == "stage") { 
+					echo '<span class="stageDirection">' . $parsedText->getWords($child) . '</span>'; 	
+				} elseif ( $child->getName() == "sp" ) { 
+				    if ( $child->attributes()->who ) {
+				        $speaker = str_replace( "#", "", $child->attributes()->who );
+				    }
+				        ?>
+					<h4 class="<?php echo $speaker; ?>"><?php 
+                        echo '<span class="name">' . $parsedText->getWords($child->speaker) . '</span>';
+					if ($child->stage) {
+						echo '<span class="stageDirection">' . $parsedText->getWords($child->stage) . '</span>';
+					} ?>
+					<span class="reader"></span></h4>
+					<p class="<?php echo $speaker; ?>">						
+						<?php echo $parsedText->getWords( $child->ab ); ?>
+					</p>
+				<?php
+					
+				} 
+			} ?>
 		
 		<?php foreach($act->div2 as $scene) { ?>
 			<h3><?php 
@@ -145,20 +174,22 @@ foreach($parsedText->xml->xpath('//tei:div1') as $act) { ?>
                 }
              ?></h3>
 			
-			<?php foreach($scene->children() as $child) { 
-				if ($child->getName() == "stage") { 
-					echo '<span class="stageDirection">' . $parsedText->getWords($child) . '</span>'; 	
-				} elseif ($child->getName() == "sp") { ?>
-					<h4 class="<?php echo str_replace('#', '', $child->attributes()->who); ?>"><?php 
-                        echo '<span class="name">' . $parsedText->getWords($child->speaker) . '</span>';
-					if ($child->stage) {
-						echo '<span class="stageDirection">' . $parsedText->getWords($child->stage) . '</span>';
+			<?php foreach( $scene->children() as $child ) { 
+				if ( $child->getName() == "stage" ) { 
+					echo '<span class="stageDirection">' . $parsedText->getWords( $child ) . '</span>'; 	
+				} elseif ( $child->getName() == "sp") { 
+					if ( ( string )$child->attributes()->who !== "" ) {
+				        $speaker = str_replace( "#", "", $child->attributes()->who );
+				    }
+				    ?>
+					<h4 class="<?php echo $speaker; ?>">
+					<span class="name"><?php echo $parsedText->getWords( $child->speaker ); ?></span>
+					<?php if ( $child->stage ) {
+						echo '<span class="stageDirection">' . $parsedText->getWords( $child->stage ) . '</span>';
 					} ?>
 					<span class="reader"></span></h4>
-					<p class="<?php echo str_replace('#', '', $child->attributes()->who); ?>">						
-						<?php
-						echo $parsedText->getWords($child->ab); 
-					?>
+					<p class="<?php echo $speaker; ?>">						
+						<?php echo $parsedText->getWords( $child->ab ); ?>
 					</p>
 				<?php
 					
@@ -169,6 +200,7 @@ foreach($parsedText->xml->xpath('//tei:div1') as $act) { ?>
 	$i++;
 }
 ?>
+</div>
 </div>
 </body>
 </html>

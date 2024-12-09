@@ -8,41 +8,43 @@ var highlightColors = [
 	];
 
 function showCharLines() {
-	$('h5').removeClass();
-	$('.sortDiv').each(function() {
-		var charLines = 0;
+	$( "h5" ).removeClass();
+	$( ".sortDiv" ).each( function() {
+		let charLines = 0;
 		
-		$(this).find('.lines').each(function() {
-			charLines += parseInt($(this).html());
-		});
+		$( this ).find( ".lines" ).each( function() {
+			charLines += parseInt( $( this ).html() );
+		} );
 		
-		$(this).find('h4').html(charLines + ' Lines');
-		var percent = Math.round((charLines / totalLines) * 10000) / 100 + '%';
-		if (charLines > (totalLines / readers) * 1.25) {
-			$(this).find('h5').html(percent).addClass('positive');
-		} else if (charLines < (totalLines / readers) * .75) {
-			$(this).find('h5').html(percent).addClass('negative');			
-		} else {
-			$(this).find('h5').html(percent);
+		$( this ).find( "h4" ).html( `${ charLines } Lines` );
+
+		const percent = `${ Math.round( ( charLines / totalLines ) * 10000) / 100 }%`,
+		    evenSplit = totalLines / readers;
+
+		$( this ).find( "h5" ).html( percent )
+		if ( charLines > evenSplit * 1.25 ) {
+			$( this ).find( "h5" ).addClass( "positive" );
+		} else if ( charLines < evenSplit * .75 ) {
+			$( this ).find( "h5" ).addClass( "negative" );			
 		}
-	});
+	} );
 }
 
 function updateRoles() {
-	roles = new Array();
-	var i = 0;
+	const roles = [];
+	let i = 0;
 	
-	$('.connectedSortable').each(function() {
-		var j = 0;
-		roles[i] = new Array();
+	$( '.connectedSortable').each(function() {
+		let j = 0;
+		roles[ i ] = [];
 
-		$(this).find('li').each(function() {
-			roles[i][j] = $(this).attr('id');
-			j++;			
-		});
+		$( this ).find( "li ").each( function() {
+			roles[ i ][ j ] = $( this ).attr( "id" );
+			j++;
+		} );
 		
 		i++;
-	});
+	} );
 }
 
 function checkConflicts() {
@@ -62,9 +64,9 @@ function checkConflicts() {
 }
 
 function updateReaderNames() {
-	$('.sortDiv li').each(function() {
-		var reader = $(this).parent().parent().find('.renameReader').val();
-		$('h4.' + $(this).attr('id')).find('.reader').html('(' + reader + ')');
+	$( ".sortDiv li" ).each( function() {
+		var reader = $( this ).parent().parent().find( ".renameReader" ).val();
+		$( `h4.${ $( this ).attr( "id" ) }` ).find( ".reader" ).html( `(${ reader })` );
 	});
 }
 
@@ -75,19 +77,21 @@ function addHighlighting() {
 		if ($(this).find('.highlightInput').is(':checked')) {
 			highlight = true;
 		}
-		$(this).find('li').each(function() {
-			$('.' + $(this).attr('id')).removeAttr('style');
-			if (highlight) {
-				$('.' + $(this).attr('id')).css({
-					'background-color': highlightColors[i % highlightColors.length]
-				});
+		
+		$( this ).find( "li" ).each( function() {
+		    const highlightClass = `.${ $( this ).attr( "id" ) }`;
+			$( highlightClass ).removeAttr( "style" );
+			if ( highlight ) {
+				$( highlightClass ).css( {
+					'background-color': highlightColors[ i % highlightColors.length ]
+				} );
 			}
-		});
+		} );
 		
 		if (highlight) {
 			i++;
 		}
-	});
+	} );
 }
 
 $(document).ready(function() {
@@ -156,37 +160,36 @@ $(document).ready(function() {
 			}).disableSelection();			
 		}
 		
-		$('h2').html('Roles - ' + readers + ' Readers');
+		$( "h2" ).html( `Roles - ${ readers } Readers`);
 		
 		showCharLines();
 	});
 
-	$(document).on('change', '.characters input', function() {
+	$( document ).on( "change", ".characters input", function() {
 		var i = 0;
-		$('.characters input').each(function() {
-			$('.' + $(this).val()).removeAttr('style');
+		$( ".characters input" ).each( function() {
+		    const highlightClass = `.${ $( this ).val() }`;
 
-			if ($(this).prop('checked')) {
-				$('.' + $(this).val()).css({
-					'background-color': highlightColors[i % highlightColors.length]
-				});
+			$( highlightClass ).removeAttr( "style" );
+
+			if ( $( this ).prop( "checked" ) ) {
+				$( highlightClass ).css( {
+					'background-color': highlightColors[ i % highlightColors.length ]
+				} );
 				i++;
 			}
-		});
-	});
-	
-	$(document).on('click', '.showHideCharacters', function() {
-		$('.charactersWrapper').toggleClass('showCharacters');
-	});
+		} );
+	} );
 
 	$(document).on('click', '.characters label', function() {
 		$(this).siblings('input').trigger('click');
 	});
 	
-	$(document).on('click', '.showSort', function() {
+	$( document ).on( "click", ".showSort span", function() {
 		updateReaderNames();
 		addHighlighting();
-		$('.sortSection').toggle();
+		$( ".showSort" ).find( "span" ).toggle();
+		$( ".sortSection" ).toggle();
 	});
 
 	$(document).on('change', '#lineNumberDisplay', function() {
@@ -213,17 +216,26 @@ $(document).ready(function() {
 		$('.sortDiv span h3').show();
 	});
 
-	$('.sortWrapper').on('keypress', '.renameReader', function(event) {
+	$( ".sortWrapper" ).on( "keypress", ".renameReader", function( event ) {
 
-		if (event.keyCode == 13) {
-			$(this).trigger('focusout');
+		if ( event.keyCode === 13 ) {
+			$( this ).trigger( "focusout" );
 		}
-	});
+	} );
 	
-	$(document).on('scroll', function() {
-		var percent = (Math.round(window.scrollY / $(document).height() * 10000) / 100) + "%";
-		$('.completed').width(percent);
-		$('.percentText').html(percent);
-	});
+	$( ".playWrapper" ).scroll( function() {
+	    var height = $( ".play" ).height(),
+	        offset = $( ".play" ).offset() || { top: 0 },
+	        currentTop = -offset.top,
+	        wrapperOffset = $( ".playWrapper" ).height(),
+	        percentage = Math.max( Math.round( ( ( ( wrapperOffset / 2 ) + currentTop ) - ( wrapperOffset / 2 ) ) / (  height - wrapperOffset )
+ * 10000 ) / 100, 0 ),
+	        percent = `${ percentage }%`;
+		$( ".completed" ).width( percent ).css( {
+		    'background-color': `rgba( ${ 255 - ( 255 * percentage / 100 ) }, ${ 255 * percentage / 100 }, 0, 1 )`
+		} );
+		$( ".percentText" ).html( percent );
+	} );
+
 	updateReaderNames();
 });
