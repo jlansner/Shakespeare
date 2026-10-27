@@ -159,7 +159,7 @@ The <att>ana</att> attribute may provide information such as the specific type o
 <listPerson>
 <person xml:id="Viola_TN">
 <persName><name>Viola</name></persName>
-<state><p>a lady of Messaline shipwrecked on the coast of Illyria<lb xml:id="lb-00000"/>(later disguised as <name>Cesario</name>)</p></state>
+<state><p>a lady of Messaline shipwrecked on the coast of Illyria <lb xml:id="lb-00000"/>(later disguised as <name>Cesario</name>)</p></state>
 <sex value="2">female</sex>
 </person>
 </listPerson>

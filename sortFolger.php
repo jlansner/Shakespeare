@@ -1,9 +1,11 @@
+<!DOCTYPE html>
+
 <?php
 
-include('Classes/ParseTextFolgers.php');
+include( 'Classes/ParseTextFolgers.php' );
 
-$parsedText = new ParseTextFolgers($_GET['play']);	
-$readers = $parsedText->assign_roles($_GET['readers']);
+$parsedText = new ParseTextFolgers( $_GET[ 'play' ], $_GET[ 'acts' ] );	
+$readers = $parsedText->assign_roles( $_GET[ 'readers' ] );
 
 ?>
 
@@ -91,24 +93,24 @@ foreach ($readers as $reader) { ?>
 		<h5>Percent</h5>
 		<ul id="reader<?php echo $i; ?>" class="connectedSortable reader">
 <?php 
-		foreach ($reader as $role) {
-			echo '<li id="' . $role . '" class="ui-state-default">' . $parsedText->characters[ $role ][ "name" ] . '<br />
-			<span class="state">' . $parsedText->characters[ $role ][ "state" ] . '<br />
+		foreach ( $reader as $role ) {
+			$character = $parsedText->characters[ $role ];
+			echo '<li id="' . $role . '" class="ui-state-default">' . $character[ "name" ] . '<br />
+			<span class="state">' . ucfirst( $character[ "state" ] ) . '<br />
 				<span>
-				<span class="lines">' . $parsedText->characters[$role]['lines']['total'] . '</span> Lines<br />
+				<span class="lines">' . $character[ "lines" ][ "total" ] . '</span> Lines<br />
 				<table class="actLines">
 				<tr>';
 			foreach ($parsedText->play as $key => $value) {
-                $value = substr(str_replace("ACT ", "",$value['title']),0,3);
-                
-				echo "<th>" . $value . "</th>";
+				echo "<th>" . $value[ "number" ] . "</th>";
 			}
 			echo '</tr>
             <tr>';
 			foreach ($parsedText->play as $key => $value) {
+				$currentAct = $character[ 'lines' ][ 'acts' ][ $value[ "title" ] ];	
+			
 				$actLines = 0;
-				
-				$actLines += $parsedText->characters[$role]['lines']['acts'][$value['title']]['total'];
+				$actLines += is_int( $currentAct ) ? $currentAct : $currentAct[ "total" ];
 				
 				echo '<td>' . $actLines . '</td>';
 			}

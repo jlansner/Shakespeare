@@ -23,6 +23,4 @@ RewriteRule ^([^/]+)/sort/(\d+)$ sort.php?play=$1&readers=$2 [L,NC]
 RewriteRule ^([^/]+)/sort/act(\d+)/(\d+)$ sort.php?play=$1&act=$2&readers=$3 [L,NC]
 
 RewriteRule ^([^/]+)/newSort/(\d+)$ sortFolger.php?play=$1&readers=$2 [L,NC]
-
-RewriteRule ^play/(.+)$ play.php?play=$1 [L,NC]
-RewriteRule ^text/(.+)$ text.php?play=$1 [L,NC]
+RewriteRule ^([^/]+)/newSort/(\d+)/acts=(.+)$ sortFolger.php?play=$1&readers=$2&acts=$3 [L,NC]
