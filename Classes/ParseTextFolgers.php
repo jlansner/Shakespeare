@@ -1,6 +1,21 @@
 <?php
 
 class ParseTextFolgers {
+    public string $xml_file;
+    public object $xml;
+    public string $sortField;
+    public array $wordTags;
+    public array $selectedActs;
+    public string $title;
+    public array $characters;
+    public array $sortCharacters;
+    public array $lines;
+    public array $conversations;
+    public array $conLines;
+    public array $play;
+    public int $totalSpeeches;
+    public int $totalLines;
+    public int $readers;
 	
 	public function __construct( $xml_file, $acts = null ) {
     	$this->xml_file = $xml_file;
@@ -9,7 +24,7 @@ class ParseTextFolgers {
 	
         $this->sortField = 'interactions';
         $this->wordTags = array('w','c','pc');
-    	$this->selectedActs = null;
+    	$this->selectedActs = array();
 		$this->title = $this->xml->teiHeader->fileDesc->titleStmt->title;
 
         if ( $acts ) {
@@ -58,13 +73,15 @@ class ParseTextFolgers {
         arsort($this->sortCharacters);
         $sortKeys = array_keys($this->sortCharacters);
 
+        echo "---- \n";
+        var_export( $sortKeys );
 		$totalCharacters = count($this->sortCharacters);
 
 		$maxLines = ($this->totalLines / $readers) * 1.1;
 		$readerLines = array();
 		// assign characters with most interactions to separate readers
 		for ($i = 0; $i < $readers; $i++) {
-			$newRole = $sortKeys[$i];
+			$newRole = $sortKeys[ $i ];
 			$roles[$i][0] = $newRole;
 			$readerLines['reader' . $i] = $this->characters[$newRole]['lines']['total']; 
 		}
@@ -146,12 +163,15 @@ class ParseTextFolgers {
 
         $results = $this->xml->xpath( '//tei:person' );
         foreach( $results as $result ) {
-            $name = ( string )$result->attributes( 'http://www.w3.org/XML/1998/namespace' )->id;
+            $name = ( string ) $result->attributes( 'http://www.w3.org/XML/1998/namespace' )->id;
             if ( $name ) {
                 $this->characters[ $name ] = array();
                 $this->characters[ $name ][ "id" ] = $name;
-                if ( $result->persName->name ) {
-                    $charName = $result->persName->name;
+                $this->characters[ $name ][ "corresp" ] = str_replace( "#", "", ( string ) $result->attributes()->corresp );
+
+                $charName = $result->persName->name;
+
+                if ( $charName ) {
                     $this->characters[ $name ][ "name" ] = ( string ) $charName;
                     $this->characters[ $name ][ "state" ] = ( string ) strip_tags( $result->state->asXml() );
                 } else {
@@ -164,9 +184,13 @@ class ParseTextFolgers {
                             $charName = substr($charName,0,-2);
                         }
                     }
-                    $charName = ucwords(strtolower(str_replace(".", " ", $charName)));
-                    $this->characters[$name]['name'] = $charName;
+                    $charName = ucwords( strtolower( str_replace( ".", " ", $charName ) ) );
+                    $this->characters[ $name ][ "name" ] = $charName;
+                    $this->characters[ $name ][ "state" ] = "";
                 }
+
+                $this->characters[ $name ][ "speeches" ] = array( "total" => 0, "acts" => array() );
+                $this->characters[ $name ][ "lines" ] = array( "total" => 0, "acts" => array()  );
             }
         }
 
@@ -196,24 +220,42 @@ class ParseTextFolgers {
 
             $k = 0;
 
-            if ( is_null( $this->selectedActs ) || in_array( strtoupper( $actNumber ), $this->selectedActs ) ) {
+            if ( empty( $this->selectedActs ) || in_array( strtoupper( $actNumber ), $this->selectedActs ) ) {
+
+                foreach ( $this->characters as $key => $value ) {
+                    $this->characters[ $key ][ "speeches" ][ "acts" ][ $actName ] = array( "total" => 0, "none" => 0, "scenes" => array() );
+                    $this->characters[ $key ][ "lines" ][ "acts" ][ $actName ] = array( "total" => 0, "none" => 0, "scenes" => array() );
+                }
 
                 foreach ( $act->sp as $speech ) {
-                    $speakers = (string)$speech->attributes()->who;
-                    $actData['speeches'][$k]['speakers'] = explode(" ", str_replace("#","",$speakers));
+                    $speakersList = ( string ) $speech->attributes()->who;
+                    $speakers = explode( " ", $speakersList );
 
-                    foreach ($actData['speeches'][$k]['speakers'] as $currentKey => $currentSpeaker) {
-                        if ( $this->characters[$currentSpeaker] ) {
-                            $this->characters[$currentSpeaker]['speeches']['total']++;
-                            $this->characters[$currentSpeaker]['speeches']['acts'][$actName]++;
+                    foreach ( $speakers as $speaker ) {
+                        $speaker = str_replace( "#", "", $speaker );
+                        if ( $this->characters[ $speaker] ) {
+                            $actData[ "speeches" ][ $k ][ "speakers" ][] = $speaker;
+                        } else {
+                            foreach( $this->characters as $character ) {
+                                if ( $character[ "corresp" ] == $speaker ) {
+                                    $actData[ "speeches" ][ $k ][ "speakers" ][] = $character[ "id" ];
+                                }
+                            }
+                        }
+                    }
 
+                    foreach ( $actData['speeches'][$k]['speakers'] as $currentSpeaker ) {
+                        if ( $this->characters[ $currentSpeaker ] ) {
+                            $this->characters[ $currentSpeaker ][ "speeches" ][ "total" ]++;
+                            $this->characters[ $currentSpeaker ][ "speeches" ][ "acts" ][ $actName ][ "none" ]++;
+                            
                             $lines = $speech->ab->milestone->count();
-                            if ($speech->ab->seg) {
+                            if ( $speech->ab->seg ) {
                                 $lines += $speech->ab->seg->milestone->count();
                             }
 
                             $this->characters[$currentSpeaker]['lines']['total'] += $lines;
-                            $this->characters[$currentSpeaker]['lines']['acts'][$actName] += $lines;
+                            $this->characters[$currentSpeaker]['lines']['acts'][$actName][ "none"] += $lines;
 
                             if ($k > 0) {
                                 foreach ($actData['speeches'][$k - 1]['speakers'] as $prevKey => $prevSpeaker) {
@@ -227,27 +269,51 @@ class ParseTextFolgers {
                 }
 
                 $play[$i]['scenes'] = array();
+
                 foreach ($act->div2 as $scene) {
 
                     $sceneName = strtoupper((string)$scene->attributes()->type);
                     if (preg_match('/[0-9]/', (string)$scene->attributes()->n)) {
                         $sceneName .= " " . $scene->attributes()->n;
                     }
+
+                    foreach ( $this->characters as $key => $value ) {
+                        $this->characters[ $key ][ "speeches" ][ "acts" ][ $actName ][ "scenes" ][ $sceneName ] = 0;
+                        $this->characters[ $key ][ "lines" ][ "acts" ][ $actName ][ "scenes" ][ $sceneName ] = 0;
+                    }
                     $actData['scenes'][$j]['title'] = $sceneName;
 
                     $actData['scenes'][$j]['speeches'] = array();
                     $k = 0;
+
+                    $actData[ "scenes" ][ $j ][ "speeches" ][ $k ] = array ( "speakers" => array() );
+
                     foreach ($scene->sp as $speech) {
-                        $speakers = (string)$speech->attributes()->who;
-                        $actData['scenes'][$j]['speeches'][$k]['speakers'] = explode(" ", str_replace("#","",$speakers));
-                        foreach ($actData['scenes'][$j]['speeches'][$k]['speakers'] as $currentKey => $currentSpeaker) {
+                    
+                        $speakersList = ( string ) $speech->attributes()->who;
+                        $speakers = explode( " ", $speakersList );
+
+                        foreach ( $speakers as $speaker ) {
+                            $speaker = str_replace( "#", "", $speaker );
+                            if ( isset( $this->characters[ $speaker ] ) ) {
+                                $actData[ "scenes" ][ $j ][ "speeches" ][ $k ][ "speakers" ][] = $speaker;
+                            } else {
+                                foreach( $this->characters as $character ) {
+                                    if ( $character[ "corresp" ] == $speaker ) {
+                                        $actData[ "scenes" ][ $j ][ "speeches" ][ $k ][ "speakers" ][] = $character[ "id" ];
+                                    }
+                                }
+                            }
+                        }
+
+                        foreach ( $actData[ "scenes" ][ $j ][ "speeches" ][ $k ][ "speakers" ] as $currentSpeaker ) {
                             if ( $this->characters[$currentSpeaker] ) {
                                 $this->characters[$currentSpeaker]['speeches']['total']++;
                                 $this->characters[$currentSpeaker]['speeches']['acts'][$actName]['total']++;
                                 $this->characters[$currentSpeaker]['speeches']['acts'][$actName]['scenes'][$sceneName]++;
         
                                 $lines = $speech->ab->milestone->count();
-                                if ($speech->ab->seg) {
+                                if ( $speech->ab->seg ) {
                                     $lines += $speech->ab->seg->milestone->count();
                                 }
         
@@ -255,10 +321,10 @@ class ParseTextFolgers {
                                 $this->characters[$currentSpeaker]['lines']['acts'][$actName]['total'] += $lines;
                                 $this->characters[$currentSpeaker]['lines']['acts'][$actName]['scenes'][$sceneName] += $lines;
         
-                                if ($k > 0) {
-                                    foreach ($actData['scenes'][$j]['speeches'][$k - 1]['speakers'] as $prevKey => $prevSpeaker) {
-                                        $this->characters[$currentSpeaker]['interactions'][$prevSpeaker]++;
-                                        $this->characters[$prevSpeaker]['interactions'][$currentSpeaker]++;
+                                if ( $k > 0 ) {
+                                    foreach ( $actData[ "scenes" ][ $j ][ "speeches" ][ $k - 1 ][ "speakers"] as $prevKey => $prevSpeaker) {
+                                        $this->characters[ $currentSpeaker ][ "interactions" ][ $prevSpeaker ]++;
+                                        $this->characters[ $prevSpeaker ][ "interactions" ][ $currentSpeaker ]++;
                                     }
                                 }
                             }

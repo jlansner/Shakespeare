@@ -4,8 +4,12 @@
 
 include( 'Classes/ParseTextFolgers.php' );
 
-$parsedText = new ParseTextFolgers( $_GET[ 'play' ], $_GET[ 'acts' ] );	
-$readers = $parsedText->assign_roles( $_GET[ 'readers' ] );
+$play = isset( $_GET[ "play" ] ) ? $_GET[ "play" ] : "";
+$readers = isset( $_GET[ "readers" ] ) ? $_GET[ "readers" ] : 5;
+$acts = isset( $_GET[ "acts" ] ) ? $_GET[ "acts" ] : "";
+
+$parsedText = new ParseTextFolgers( $play, $acts );	
+$readers = $parsedText->assign_roles( $readers );
 
 ?>
 
