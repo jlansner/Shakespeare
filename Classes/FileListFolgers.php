@@ -3,14 +3,14 @@
 class FileList {
 	
 	public function getDirectoryList() {
-		$list = scandir('xml_folgers');
+		$list = scandir( "xml_folgers" );
 		$plays = array();
 
 		foreach ( $list as $item ) {
-			if ( strpos( $item, 'xml' ) ) {
-				$file = new SplFileObject('xml_folgers/' . $item);
+			if ( strpos( $item, "xml" ) ) {
+				$file = new SplFileObject( "xml_folgers/{$item}" );
 				if ( !$file->eof() ) {
-			    	$file->seek( 6 );  // this only works because XML files have been standardized
+			    	$file->seek( 6 );  // this works because the XML files have been standardized
 				    $title = $file->current();
 				}
 				$abbr = explode( ".", $item )[ 0 ];
