@@ -251,9 +251,9 @@ class ParseTextFolgers {
                             $this->characters[ $currentSpeaker ][ "speeches" ][ "total" ]++;
                             $this->characters[ $currentSpeaker ][ "speeches" ][ "acts" ][ $actName ][ "none" ]++;
                             
-                            $lines = $speech->ab->milestone->count();
-                            if ( $speech->ab->seg ) {
-                                $lines += $speech->ab->seg->milestone->count();
+                            $lines = $speech->ab?->milestone?->count() ?? 0;
+                            if ( $speech->ab?->seg ) {
+                                $lines += $speech->ab?->seg?->milestone?->count() ?? 0;
                             }
 
                             $this->characters[ $currentSpeaker ][ 'lines' ][ 'total' ] += $lines;
@@ -314,9 +314,9 @@ class ParseTextFolgers {
                                 $this->characters[ $currentSpeaker ][ 'speeches' ][ 'acts' ][ $actName ][ 'total' ]++;
                                 $this->characters[ $currentSpeaker ][ 'speeches' ][ 'acts' ][ $actName ][ 'scenes' ][ $sceneName ]++;
         
-                                $lines = $speech->ab->milestone->count();
-                                if ( $speech->ab->seg ) {
-                                    $lines += $speech->ab->seg->milestone->count();
+                                $lines = $speech->ab?->milestone?->count() ?? 0;
+                                if ( $speech->ab?->seg ) {
+                                    $lines += $speech->ab?->seg?->milestone?->count() ?? 0;
                                 }
         
                                 $this->characters[ $currentSpeaker ][ 'lines' ][ 'total' ] += $lines;
