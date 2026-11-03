@@ -24,24 +24,24 @@ $readers = $parsedText->assign_roles( $readers );
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 	<script type="text/javascript">
-		characters = <?php echo json_encode($parsedText->characters); ?>;
-		roles = <?php echo json_encode($readers); ?>;
-		totalLines =  <?php echo $parsedText->totalLines; ?>;
-		readers = <?php echo $_GET['readers']; ?>;
+		characters = <?php echo json_encode( $parsedText->characters ); ?>;
+		roles = <?php echo json_encode( $readers ); ?>;
+		totalLines = <?php echo $parsedText->totalLines; ?>;
+		readers = <?php echo $_GET[ 'readers' ]; ?>;
 	</script>
 
 	<script type="text/javascript" src="/js/shakespeareFolgers.js"></script>
 	<script type="text/javascript">
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-2301275-4']);
-  _gaq.push(['_trackPageview']);
+  var _gaq = _gaq || [ ];
+  _gaq.push( [ '_setAccount', 'UA-2301275-4' ] );
+  _gaq.push( [ '_trackPageview' ] );
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+  ( function() {
+    var ga = document.createElement( 'script' ); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ( 'https:' == document.location.protocol ? 'https://ssl' : 'http://www' ) + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName( 'script' )[ 0 ]; s.parentNode.insertBefore( ga, s );
+  } )();
 
 </script>
 	</head>
@@ -71,20 +71,20 @@ $readers = $parsedText->assign_roles( $readers );
 <div class="sortSection">
 
     <p>Total Speeches - <?php echo $parsedText->totalSpeeches; ?><br />
-    Total Lines - <?php echo number_format($parsedText->totalLines); ?><br />
-    Characters - <?php echo count($parsedText->sortCharacters); ?><br />
+    Total Lines - <?php echo number_format( $parsedText->totalLines ); ?><br />
+    Characters - <?php echo count( $parsedText->sortCharacters ); ?><br />
     </p>
     
-    <h2>Roles - <?php echo $_GET['readers']; ?> Readers</h2>
+    <h2>Roles - <?php echo $_GET[ 'readers' ]; ?> Readers</h2>
     <h3 class="addReader">Add Reader</h3>
     <div class="sortWrapper">
 <?php
 $i = 1;
 
-foreach ($readers as $reader) { ?>
+foreach ( $readers as $reader ) { ?>
 	<div class="sortDiv">
 		<span>
-		<?php if ($i > $_GET['readers']) { ?>
+		<?php if ( $i > $_GET[ 'readers' ] ) { ?>
 			<h3 class="unassignedReader">Unassigned</h3>
 			<input name="reader" type="text" class="renameReader" value="Unassigned" />
 		<?php } else { ?>
@@ -92,7 +92,10 @@ foreach ($readers as $reader) { ?>
 			<input name="reader" type="text" class="renameReader" value="Reader <?php echo $i; ?>" />
 		<?php } ?>
 		</span>
-		<p><input name="highilght" type="checkbox" class="highlightInput" /> <label for="highlight">Highlight</label></p>
+		<p>
+			<input name="highilght<?php echo $i; ?>" id="highlight<?php echo $i; ?>" type="checkbox" class="highlightInput" />
+			<label for="highlight<?php echo $i; ?>">Highlight</label>
+		</p>
 		<h4>Lines</h4>
 		<h5>Percent</h5>
 		<ul id="reader<?php echo $i; ?>" class="connectedSortable reader">
@@ -105,12 +108,12 @@ foreach ($readers as $reader) { ?>
 				<span class="lines">' . $character[ "lines" ][ "total" ] . '</span> Lines<br />
 				<table class="actLines">
 				<tr>';
-			foreach ($parsedText->play as $key => $value) {
+			foreach ( $parsedText->play as $key => $value ) {
 				echo "<th>" . $value[ "number" ] . "</th>";
 			}
 			echo '</tr>
             <tr>';
-			foreach ($parsedText->play as $key => $value) {
+			foreach ( $parsedText->play as $key => $value ) {
 				$currentAct = $character[ 'lines' ][ 'acts' ][ $value[ "title" ] ];	
 			
 				$actLines = 0;
@@ -140,73 +143,39 @@ $line = 0;
 $i = 1;
 $speaker = "";
 
-foreach( $parsedText->xml->xpath('//tei:div1') as $act ) { ?>
+echo $parsedText->xml->xpath( "//tei:div[@type='synopsis']" )?[ 0 ]->asXml();
+
+foreach( $parsedText->xml->xpath( '//tei:div1' ) as $act ) { ?>
 		<h2><?php 
         if ( $act->head ) {
 			echo $parsedText->getWords( $act->head );
     	} else {
-    	    echo strtoupper( (string)$act->attributes()->type );
+    	    echo strtoupper( ( string )$act->attributes()->type );
     	}
             ?></h2>
 		
-		<?php foreach($act->children() as $child) { 
-				if ($child->getName() == "stage") { 
-					echo '<span class="stageDirection">' . $parsedText->getWords($child) . '</span>'; 	
-				} elseif ( $child->getName() == "sp" ) { 
-				    if ( $child->attributes()->who ) {
-				        $speaker = str_replace( "#", "", $child->attributes()->who );
-				    }
-				        ?>
-					<h4 class="<?php echo $speaker; ?>"><?php 
-                        echo '<span class="name">' . $parsedText->getWords($child->speaker) . '</span>';
-					if ($child->stage) {
-						echo '<span class="stageDirection">' . $parsedText->getWords($child->stage) . '</span>';
-					} ?>
-					<span class="reader"></span></h4>
-					<p class="<?php echo $speaker; ?>">						
-						<?php echo $parsedText->getWords( $child->ab ); ?>
-					</p>
-				<?php
-					
-				} 
-			} ?>
+		<?php foreach( $act->children() as $child ) { 
+			echo $parsedText->getText( $child );
+		}
 		
-		<?php foreach($act->div2 as $scene) { ?>
+		foreach( $act->div2 as $scene ) { ?>
 			<h3><?php 
-                if ($scene->head) {
-					echo $parsedText->getWords($scene->head); 
+                if ( $scene->head ) {
+					echo $parsedText->getWords( $scene->head ); 
                 } else {
-                    echo ucfirst((string)$scene->attributes()->type);
+                    echo ucfirst( ( string )$scene->attributes()->type );
                 }
              ?></h3>
 			
 			<?php foreach( $scene->children() as $child ) { 
-				if ( $child->getName() == "stage" ) { 
-					echo '<span class="stageDirection">' . $parsedText->getWords( $child ) . '</span>'; 	
-				} elseif ( $child->getName() == "sp") { 
-					if ( ( string )$child->attributes()->who !== "" ) {
-				        $speaker = str_replace( "#", "", $child->attributes()->who );
-				    }
-				    ?>
-					<h4 class="<?php echo $speaker; ?>">
-					<span class="name"><?php echo $parsedText->getWords( $child->speaker ); ?></span>
-					<?php if ( $child->stage ) {
-						echo '<span class="stageDirection">' . $parsedText->getWords( $child->stage ) . '</span>';
-					} ?>
-					<span class="reader"></span></h4>
-					<p class="<?php echo $speaker; ?>">						
-						<?php echo $parsedText->getWords( $child->ab ); ?>
-					</p>
-				<?php
-					
-				} 
+				echo $parsedText->getText( $child );
 			}
 		}
 	
 	$i++;
 }
 ?>
-</div>
+	</div>
 </div>
 </body>
 </html>

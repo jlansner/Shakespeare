@@ -230,9 +230,12 @@ $(document).ready(function() {
 	        wrapperOffset = $( ".playWrapper" ).height(),
 	        percentage = Math.max( Math.round( ( ( ( wrapperOffset / 2 ) + currentTop ) - ( wrapperOffset / 2 ) ) / (  height - wrapperOffset )
  * 10000 ) / 100, 0 ),
-	        percent = `${ percentage }%`;
-		$( ".completed" ).width( percent ).css( {
-		    'background-color': `rgba( ${ 255 - ( 255 * percentage / 100 ) }, ${ 255 * percentage / 100 }, 0, 1 )`
+	        percent = `${ percentage }%`,
+			red = percentage < 50 ? 255 : 255 - ( 255 * ( percentage - 50) / 50 ),
+			green = percentage < 50 ? 255 * percentage / 50 : 255;
+
+			$( ".completed" ).width( percent ).css( {
+		    'background-color': `rgba( ${ red }, ${ green }, 0, 1 )`
 		} );
 		$( ".percentText" ).html( percent );
 	} );

@@ -1,7 +1,8 @@
-@import 'compass';
 body {
   font-family: 'Times New Roman';
   font-size: 14px;
+  padding: 0;
+  margin: 0;
 }
 
 table, th, td {
@@ -83,10 +84,9 @@ table, th, td {
 
 .connectedSortable {
   list-style-type: none;
-  margin: 0;
+  margin: 0 5px;
   padding: 5px;
   float: left;
-  margin: 0 5px;
   width: 122px;
   min-height: 60px;
 
@@ -230,7 +230,7 @@ table.infoTable {
   width: 100%;
   z-index: 100;
   height: 80px;
-  @include box-sizing(border-box);
+  box-sizing: border-box;
   padding: 5px;
   background: #fff;
   border-bottom: 1px solid #ccc;
@@ -239,12 +239,17 @@ h1 {
   margin: 0 0 5px 0;
 }
 
+p {
+  float: right;
+  margin: 5px 10px;
+}
+
 .totalPlay {
   text-align: center;
   width: 75%;
   height: 30px;
   border: 1px solid #000;
-  @include box-sizing(border-box);
+  box-sizing: border-box;
   position: relative;
   
   .completed {
@@ -259,23 +264,30 @@ h1 {
   
   .percentText {
     z-index: 100;
-    width: 100%;
     position: absolute;
-    left: 0;
-    top: 6px;
+    left: 50%;
+    top: 3px;
+    padding: 3px 6px;
+    background: #fff;
+    border-radius: 5px;
   }
 }
   .showSort {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 10px;
+    right: 10px;
     display: inline-block;
-    @include border-radius(3px);
+    border-radius: 3px;
     border: 1px solid #999;
-    background-color: #ccc;
+    background-color: #ddd;
     font: 10px Arial;
     cursor: pointer;
-    padding: 3px;
+    padding: 5px;
+    white-space: nowrap;
+
+    .showSortOptions {
+      display: none;
+    }
   }
   
 }
@@ -287,19 +299,21 @@ h1 {
   width: 100%;
   height: 100%;
   background-color: #fff;
-  @include box-sizing(border-box);
+  box-sizing: border-box;
   padding: 80px 5px 5px 5px;
   overflow-y: auto; 
   z-index: 10;
-
-  .sortWrapper {
-  }
 }
 
+.playWrapper {
+    height: calc( 100vh - 80px );
+    margin-top: 80px;
+    overflow: scroll;
+}
 
 .play {
-  width: 25em;
-  padding: 80px 5px 5px 5px;
+  width: 40em;
+  padding:5px;
   line-height: 1.5em;
   font-family: 'Times New Roman';
  
@@ -310,6 +324,11 @@ h1 {
     .name {
       font-size: .9em;
     }
+
+    .stageDirection {
+      display: inline;
+    }
+
   }
   
   p {
@@ -318,10 +337,14 @@ h1 {
     > br:first-child {
       display: none;
     }
+
+    .stageDirection {
+      display: block;
+      text-align: right;
+    }
   }
 
   .lineNumber {
-    display: block;
     float: right;
     display: none;
   }
@@ -346,4 +369,21 @@ h1 {
     width: 20%;
     border: 1px solid #ccc;
   }
+}
+
+div[type="synopsis"] {
+  title {
+    display: inline;
+    font-style: italic;
+  }
+}
+
+.homePage {
+    padding: 5px;
+}
+
+.playList {
+    font-size: 120%;
+    line-height: 1.4em;
+    columns: 3;
 }

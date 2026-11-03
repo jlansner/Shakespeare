@@ -15,7 +15,7 @@ class ParseTextFolgers {
  
     private string $xml_file;
 
-    private array $wordTags = array( 'w', 'c', 'pc' );
+    private array $wordTags = array( "w", "c", "pc" );
     private array $selectedActs;
     private array $lines;
     private array $conversations;
@@ -70,7 +70,7 @@ class ParseTextFolgers {
 
 		$maxLines = ( $this->totalLines / $readers ) * 1.1;
 		$readerLines = array();
-		// assign characters with most interactions to separate readers
+		// assign characters with the most interactions to separate readers
 		for ( $i = 0; $i < $readers; $i++ ) {
 			$newRole = $sortKeys[ $i ];
 			$roles[ $i ][ 0 ] = $newRole;
@@ -86,7 +86,7 @@ class ParseTextFolgers {
 
 			// start with fewest lines, move up
 			foreach ( $readerLines as $key => $value ) {
-				$thisReader = substr( $key,6 );
+				$thisReader = substr( $key, 6 );
 				if ( $notAssigned ) {
 					$noConflict = true;
 
@@ -119,15 +119,15 @@ class ParseTextFolgers {
     }
     
     public function getWords( $element ) {
-        $textString = '';
+        $textString = "";
         
-        if ( !is_array( $element->children() ) ) {
-            return "";
+        if ( !$element->children() ) {
+            return $textString;
         }
 
         foreach( $element->children() as $word ) {
-            if ( $word->getName() == 'lb' ) {
-                $textString .= '<br />';
+            if ( $word->getName() == "lb" ) {
+                $textString .= "<br />";
             } else if ( in_array( $word->getName(), $this->wordTags ) ) {
                 $textString .= $word;
             } else if ( $word->getName() == 'milestone' && $word->attributes()->unit == 'ftln' ) {
@@ -153,6 +153,30 @@ class ParseTextFolgers {
         }
 
         return $textString;
+    }
+
+    public function getText( $child ) {
+        $text = "";
+        if ( $child->getName() == "stage" ) { 
+            $text .= '<span class="stageDirection">' . $this->getWords( $child ) . '</span>'; 
+        } elseif ( $child->getName() == "label" ) {
+            $text .= '<h4 class="label">' .  $this->getWords( $child ) . '</h4>';
+        } elseif ( $child->getName() == "sp" ) { 
+            if ( $child->attributes()->who ) {
+                $speaker = str_replace( "#", "", $child->attributes()->who );
+            }
+            $text .= '<h4 class="' . $speaker . '">
+                <span class="name">' . $this->getWords( $child->speaker ) . '</span>';
+                
+            if ( $child->stage ) {
+                $text .= '<span class="stageDirection">' . $this->getWords( $child->stage ) . '</span>';
+            }
+                $text .= ' <span class="reader"></span>
+            </h4>
+            <p class="' . $speaker . '">' . $this->getWords( $child->ab ) . '</p>';
+        } 
+
+        return $text;
     }
 
 	private function createCharacterArray() {
@@ -244,7 +268,7 @@ class ParseTextFolgers {
                             $actData[ "speeches" ][ $k ][ "speakers" ][] = $speaker;
                         } else {
                             foreach( $this->characters as $character ) {
-                                if ( $character[ "corresp" ] == $speaker ) {
+                                if ( strtoupper( $character[ "corresp" ] ) == strtoupper( $speaker ) ) {
                                     $actData[ "speeches" ][ $k ][ "speakers" ][] = $character[ "id" ];
                                 }
                             }
@@ -307,7 +331,7 @@ class ParseTextFolgers {
                                 $actData[ "scenes" ][ $j ][ "speeches" ][ $k ][ "speakers" ][] = $speaker;
                             } else {
                                 foreach( $this->characters as $character ) {
-                                    if ( $character[ "corresp" ] == $speaker ) {
+                                    if ( strtoupper( $character[ "corresp" ] ) == strtoupper( $speaker ) ) {
                                         $actData[ "scenes" ][ $j ][ "speeches" ][ $k ][ "speakers" ][] = $character[ "id" ];
                                     }
                                 }
