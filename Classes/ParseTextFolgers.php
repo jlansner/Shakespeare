@@ -120,6 +120,11 @@ class ParseTextFolgers {
     
     public function getWords( $element ) {
         $textString = '';
+        
+        if ( !is_array( $element->children() ) ) {
+            return "";
+        }
+
         foreach( $element->children() as $word ) {
             if ( $word->getName() == 'lb' ) {
                 $textString .= '<br />';
@@ -291,7 +296,8 @@ class ParseTextFolgers {
                     $actData[ "scenes" ][ $j ][ "speeches" ][ $k ] = array ( "speakers" => array() );
 
                     foreach ( $scene->sp as $speech ) {
-                    
+                        $actData[ "scenes" ][ $j ][ "speeches" ][ $k ] = array ( "speakers" => array() );
+
                         $speakersList = ( string ) $speech->attributes()->who;
                         $speakers = explode( " ", $speakersList );
 
